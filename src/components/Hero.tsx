@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Sparkles } from "lucide-react";
 import heroImage from "@/assets/hero-certificate.jpg";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -44,14 +45,18 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="cta" size="lg" className="text-lg">
-                Start for Free
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-              <Button variant="hero" size="lg" className="text-lg">
-                <Shield className="w-5 h-5" />
-                View Demo
-              </Button>
+              <Link to="/signup">
+                <Button variant="cta" size="lg" className="text-lg">
+                  Start for Free
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </Link>
+              <Link to="/dashboard">
+                <Button variant="hero" size="lg" className="text-lg">
+                  <Shield className="w-5 h-5" />
+                  View Demo
+                </Button>
+              </Link>
             </div>
 
             <div className="flex items-center gap-8 pt-4">
