@@ -8,35 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* AfriCertify Design System */
+    --background: 210 100% 6%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 210 50% 8%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 210 50% 8%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Dark Blue */
+    --primary: 210 100% 12%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Neon Blue */
+    --secondary: 195 100% 50%;
+    --secondary-foreground: 210 100% 6%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 50% 20%;
+    --muted-foreground: 210 20% 70%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Purple accent */
+    --accent: 258 90% 66%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Yellow CTA */
+    --cta: 45 100% 51%;
+    --cta-foreground: 210 100% 6%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 50% 20%;
+    --input: 210 50% 15%;
+    --ring: 195 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+    
+    /* Custom gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(210 100% 6%), hsl(210 100% 12%));
+    --gradient-glow: linear-gradient(135deg, hsl(195 100% 50% / 0.1), hsl(258 90% 66% / 0.1));
+    --glow-neon: 0 0 40px hsl(195 100% 50% / 0.4);
+    --glow-purple: 0 0 40px hsl(258 90% 66% / 0.3);
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,8 +70,9 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark mode uses same colors - platform is dark by default */
+    --background: 210 100% 6%;
+    --foreground: 0 0% 100%;
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -101,5 +116,11 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Urbanist', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.05em;
   }
 }
