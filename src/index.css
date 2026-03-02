@@ -46,11 +46,13 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
     
-    /* Custom gradients */
+    /* Custom gradients & glows */
     --gradient-hero: linear-gradient(135deg, hsl(210 100% 6%), hsl(210 100% 12%));
     --gradient-glow: linear-gradient(135deg, hsl(195 100% 50% / 0.1), hsl(258 90% 66% / 0.1));
+    --gradient-neon: linear-gradient(135deg, hsl(195 100% 50%), hsl(258 90% 66%));
     --glow-neon: 0 0 40px hsl(195 100% 50% / 0.4);
     --glow-purple: 0 0 40px hsl(258 90% 66% / 0.3);
+    --glow-cta: 0 0 30px hsl(45 100% 51% / 0.4);
 
     --sidebar-background: 0 0% 98%;
 
