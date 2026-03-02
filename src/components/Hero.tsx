@@ -30,18 +30,18 @@ const Hero = () => {
               className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 border border-secondary/30 rounded-full"
             >
               <Sparkles className="w-4 h-4 text-secondary" />
-              <span className="text-sm text-secondary font-medium">AI-Powered Certificate Platform</span>
+              <span className="text-sm text-secondary font-medium">AI Authenticated · Trusted Across Africa</span>
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              The Future of{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
-                Verifiable Credentials
-              </span>
+                AI Authenticated
+              </span>{" "}
+              Credentials for Africa
             </h1>
 
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Create, issue, and verify beautiful digital certificates instantly. Trusted by educators and businesses across Africa.
+              Create, issue, and verify tamper-proof digital certificates powered by AI. Trusted by educators and organizations across the continent.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import AfriCertifyLogo from "@/components/AfriCertifyLogo";
 
 const Navbar = () => {
   return (
@@ -15,22 +16,20 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex items-center gap-2"
           >
-            <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-              <span className="text-background font-bold text-xl">A</span>
-            </div>
-            <h1 className="text-2xl font-bold tracking-wider">AfriCertify</h1>
+            <Link to="/">
+              <AfriCertifyLogo size="sm" showTagline />
+            </Link>
           </motion.div>
 
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#features" className="text-muted-foreground hover:text-secondary transition-colors">
               Features
             </a>
-            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#pricing" className="text-muted-foreground hover:text-secondary transition-colors">
               Pricing
             </a>
-            <Link to="/verify" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/verify" className="text-muted-foreground hover:text-secondary transition-colors">
               Verify
             </Link>
           </div>

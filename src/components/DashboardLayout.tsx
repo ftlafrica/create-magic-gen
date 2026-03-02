@@ -11,6 +11,7 @@ import {
   Menu
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import AfriCertifyLogo from "@/components/AfriCertifyLogo";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -29,14 +30,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   const NavContent = () => (
     <>
-      <div className="flex items-center gap-2 mb-8">
-        <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
-          <span className="text-background font-bold text-2xl">A</span>
-        </div>
-        <div>
-          <h2 className="font-bold text-lg">AfriCertify</h2>
-          <p className="text-xs text-muted-foreground">Dr. Jane Bello</p>
-        </div>
+      <div className="mb-8">
+        <Link to="/">
+          <AfriCertifyLogo size="md" showTagline />
+        </Link>
+        <p className="text-xs text-muted-foreground mt-2 ml-[52px]">Dr. Jane Bello</p>
       </div>
 
       <nav className="space-y-2">
@@ -79,11 +77,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <NavContent />
           </SheetContent>
         </Sheet>
-        <div className="flex items-center gap-2 ml-4">
-          <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-            <span className="text-background font-bold text-xl">A</span>
-          </div>
-          <span className="font-bold">AfriCertify</span>
+        <div className="ml-4">
+          <AfriCertifyLogo size="sm" />
         </div>
       </div>
 

@@ -1,4 +1,5 @@
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import AfriCertifyLogo from "@/components/AfriCertifyLogo";
 
 const Footer = () => {
   return (
@@ -6,12 +7,7 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-                <span className="text-background font-bold text-xl">A</span>
-              </div>
-              <h3 className="text-xl font-bold">AfriCertify</h3>
-            </div>
+            <AfriCertifyLogo size="sm" showTagline />
             <p className="text-sm text-muted-foreground">
               The future of verifiable credentials in Africa and beyond.
             </p>
