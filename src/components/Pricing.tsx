@@ -108,7 +108,7 @@ const Pricing = () => {
                   Most Popular
                 </div>
               )}
-              <Card className={`p-8 h-full flex flex-col ${plan.popular ? 'border-secondary/50 shadow-[0_0_30px_hsl(var(--secondary)/0.2)]' : 'bg-card/50 backdrop-blur-sm'}`}>
+              <Card className={`p-8 h-full flex flex-col glow-card ${plan.popular ? 'border-secondary/50 shadow-[0_0_30px_hsl(var(--secondary)/0.2)]' : 'bg-card/50 backdrop-blur-sm'}`}>
                 <div className="mb-6">
                   <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>

@@ -126,3 +126,36 @@ All colors MUST be HSL.
     letter-spacing: 0.05em;
   }
 }
+
+/* Glow hover utility for cards */
+@layer utilities {
+  .glow-card {
+    @apply transition-all duration-300;
+  }
+  .glow-card:hover {
+    box-shadow: 0 0 30px hsl(var(--secondary) / 0.15), 0 0 60px hsl(var(--secondary) / 0.05);
+    border-color: hsl(var(--secondary) / 0.4);
+  }
+
+  .heading-hover {
+    @apply transition-all duration-300;
+  }
+  .heading-hover:hover {
+    letter-spacing: 0.08em;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
