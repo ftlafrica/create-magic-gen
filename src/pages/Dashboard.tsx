@@ -44,7 +44,7 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="p-6 bg-card/80 backdrop-blur-sm border-border hover:border-secondary/50 transition-all duration-300">
+              <Card className="p-6 bg-card/80 backdrop-blur-sm border-border glow-card">
                 <div className="flex items-start justify-between mb-4">
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-${stat.color.split('-')[1]}/20 to-transparent flex items-center justify-center`}>
                     <stat.icon className={`w-6 h-6 ${stat.color}`} />
