@@ -209,14 +209,31 @@ const Certificates = () => {
                             <Eye className="w-4 h-4" />
                           </Button>
                           {cert.status === "issued" ? (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-destructive hover:text-destructive"
-                              onClick={() => revokeMutation.mutate(cert.id)}
-                            >
-                              <Ban className="w-4 h-4" />
-                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-destructive hover:text-destructive"
+                                >
+                                  <Ban className="w-4 h-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Revoke certificate?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This will revoke the certificate for {cert.recipient_name}. The certificate will be marked as invalid.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => revokeMutation.mutate(cert.id)}>
+                                    Revoke
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           ) : (
                             <Button
                               variant="ghost"
