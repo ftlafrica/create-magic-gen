@@ -41,7 +41,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     { icon: Settings, label: "Settings", path: "/settings" },
   ];
 
-  const navItems = isRecipient ? recipientNav : issuerNav;
+  const baseNav = isRecipient ? recipientNav : issuerNav;
+  const navItems = isAdmin
+    ? [...baseNav, { icon: Shield, label: "Admin", path: "/admin" }]
+    : baseNav;
 
   const initials = profile?.full_name
     ?.split(" ")

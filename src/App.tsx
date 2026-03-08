@@ -47,7 +47,8 @@ const AnimatedRoutes = () => {
         <Route path="/issue-certificate" element={<ProtectedRoute><PageTransition><IssueCertificate /></PageTransition></ProtectedRoute>} />
         <Route path="/certificates" element={<ProtectedRoute><PageTransition><Certificates /></PageTransition></ProtectedRoute>} />
         <Route path="/analytics" element={<ProtectedRoute><PageTransition><Analytics /></PageTransition></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute><PageTransition><Dashboard /></PageTransition></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute>} />
+        <Route path="/admin" element={<AdminRoute><PageTransition><AdminPanel /></PageTransition></AdminRoute>} />
 
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
