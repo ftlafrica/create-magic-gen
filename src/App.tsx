@@ -48,6 +48,7 @@ const AnimatedRoutes = () => {
         <Route path="/template-editor" element={<ProtectedRoute><PageTransition><TemplateEditor /></PageTransition></ProtectedRoute>} />
         <Route path="/template-editor/:id" element={<ProtectedRoute><PageTransition><TemplateEditor /></PageTransition></ProtectedRoute>} />
         <Route path="/issue-certificate" element={<ProtectedRoute><PageTransition><IssueCertificate /></PageTransition></ProtectedRoute>} />
+        <Route path="/courses" element={<ProtectedRoute><PageTransition><Courses /></PageTransition></ProtectedRoute>} />
         <Route path="/certificates" element={<ProtectedRoute><PageTransition><Certificates /></PageTransition></ProtectedRoute>} />
         <Route path="/analytics" element={<ProtectedRoute><PageTransition><Analytics /></PageTransition></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute>} />

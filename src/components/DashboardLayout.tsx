@@ -33,6 +33,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const issuerNav = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
     { icon: FileText, label: "Templates", path: "/templates" },
+    { icon: BookOpen, label: "Courses", path: "/courses" },
     { icon: Award, label: "Certificates", path: "/certificates" },
     { icon: BarChart3, label: "Analytics", path: "/analytics" },
     { icon: Settings, label: "Settings", path: "/settings" },
