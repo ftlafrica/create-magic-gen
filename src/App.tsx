@@ -23,6 +23,7 @@ import RecipientPortfolio from "./pages/RecipientPortfolio";
 import CertificateDetail from "./pages/CertificateDetail";
 import Settings from "./pages/Settings";
 import AdminPanel from "./pages/AdminPanel";
+import Courses from "./pages/Courses";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
