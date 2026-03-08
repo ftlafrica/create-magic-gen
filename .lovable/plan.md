@@ -1,71 +1,122 @@
 
 
-# Phase 2: Logo Update, Favicon, Futuristic Animations, and Hero Refinement
+# AfriCertify — Remaining Work Itemized by Phase
 
-## 1. Logo and Favicon Update
+Based on a full codebase review, here is what exists and what still needs to be built, organized by your roadmap phases.
 
-- Copy `AfriCertify_Logo_2.png` to `src/assets/africertify-logo.png` (replacing current)
-- Copy `AfriCertify_Favicon.png` to `public/favicon.png` (replacing current)
-- No component changes needed -- `AfriCertifyLogo.tsx` already imports from the same path
+---
 
-## 2. Hero UI Refinement
+## What's DONE
 
-- Redesign the hero with a more dramatic, futuristic layout:
-  - Add animated floating circuit-pattern particles in the background (CSS-only with keyframes)
-  - Refine the gradient to use deeper blues with gold/neon accents matching the new logo's gold "AC"
-  - Add a floating glow orb animation behind the hero image
-  - Stagger text animations for headline words for a cinematic reveal effect
-  - Add a subtle grid/scan-line overlay for a cyberpunk feel
-  - Improve the stat counters with animated count-up effect using framer-motion
-
-## 3. Futuristic Animations Across the App
-
-### Page Transitions
-- Wrap routes in `AnimatePresence` with fade+slide transitions between pages in `App.tsx`
-
-### Animated Background Component
-- Create a reusable `CircuitBackground` component with CSS-animated floating dots and connection lines
-- Apply to Hero section and Dashboard background
-
-### Enhanced Card Interactions
-- Add glow-on-hover effect to all Cards (Features, Pricing, Dashboard stats)
-- Scale-up with border glow on hover using Tailwind + CSS transitions
-
-### Futuristic Loading Spinner
-- Create a `NeonSpinner` component with orbiting rings animation for use across the app
-
-### CSS Keyframes to Add (in tailwind.config.ts)
-- `float` -- gentle vertical bob for floating elements
-- `glow-pulse` -- neon glow intensity cycling
-- `scan-line` -- horizontal scan effect for cyberpunk feel
-- `circuit-flow` -- animated dashes along circuit paths
-
-### Typography Hover Effects
-- Add subtle letter-spacing expansion on heading hover via CSS class
-
-### Dashboard Enhancements
-- Stagger card entrance animations with increasing delays
-- Add pulsing glow borders on stat cards
-
-## 4. Low Data Mode Foundation
-- Add a CSS class `.reduce-motion` that disables all custom animations
-- Respect `prefers-reduced-motion` media query globally in CSS
-
-## Files to Change
-
-| File | Change |
+| Area | Status |
 |------|--------|
-| `src/assets/africertify-logo.png` | Replace with new logo |
-| `public/favicon.png` | Replace with new favicon |
-| `src/components/Hero.tsx` | Redesign with circuit bg, staggered text, refined colors |
-| `src/components/CircuitBackground.tsx` | New -- animated particle/circuit CSS component |
-| `src/components/NeonSpinner.tsx` | New -- futuristic loading spinner |
-| `src/components/PageTransition.tsx` | New -- AnimatePresence wrapper |
-| `src/App.tsx` | Wrap routes with PageTransition |
-| `src/index.css` | Add keyframes, glow utilities, reduced-motion support |
-| `tailwind.config.ts` | Add float, glow-pulse, scan-line keyframes and animations |
-| `src/components/Features.tsx` | Enhanced hover glow effects |
-| `src/components/Pricing.tsx` | Enhanced card animations |
-| `src/components/Navbar.tsx` | Subtle backdrop glow refinement |
-| `src/pages/Dashboard.tsx` | Enhanced stat card animations |
+| Landing page (Hero, Features, Pricing, Footer) | Done (with futuristic animations) |
+| Brand/Logo/Favicon | Done |
+| Page transitions, CircuitBackground, NeonSpinner | Done |
+| Auth: SignUp, SignIn, ResetPassword, email confirmation flow | Done |
+| Auth context with roles (admin/issuer/recipient) | Done |
+| DB: `profiles` and `user_roles` tables with RLS | Done |
+| Auto-create profile + role on signup trigger | Done |
+| Admin panel: view users, change roles | Done |
+| Settings page: edit profile, change password | Done |
+| DashboardLayout with role-based nav | Done |
+| Protected + Admin route guards | Done |
+
+---
+
+## What's REMAINING
+
+### Phase 4 — Database Schema (Core Tables)
+All pages currently use **hardcoded mock data**. The following tables need to be created:
+
+1. **`templates`** — certificate template designs (name, owner, layout JSON, colors, logo URL, created_at)
+2. **`certificates`** — issued certificates (template_id, issuer_id, recipient_name, recipient_email, unique certificate_id/code, issue_date, status, metadata)
+3. **`certificate_views`** — track verification/view events for analytics
+
+### Phase 5 — Template Editor (Functional)
+Currently a static UI mockup. Needs:
+
+4. **Save/load templates** to the `templates` table
+5. **Template design fields** wired to state (background color, logo upload, text positioning)
+6. **Logo/image upload** using file storage
+7. **AI-assisted template generation** (optional — use Lovable AI to suggest layouts)
+
+### Phase 6 — Certificate Issuance (Functional)
+Currently a static form. Needs:
+
+8. **Single issuance** — form submits to `certificates` table, generates unique ID/QR code
+9. **Bulk issuance** — CSV upload, parse rows, batch insert certificates
+10. **Certificate PDF generation** — render template + recipient data into downloadable PDF
+11. **Email delivery** — send certificate via email (edge function + email provider)
+
+### Phase 7 — Certificates List (Dynamic)
+Currently hardcoded data. Needs:
+
+12. **Fetch certificates from DB** with search, filter, pagination
+13. **Revoke certificate** functionality
+14. **Resend email** action
+15. **Download certificate** as PDF
+
+### Phase 8 — Verification Page (Dynamic)
+Currently shows a hardcoded "verified" result. Needs:
+
+16. **Search by certificate ID** — input field to look up a certificate
+17. **Public verification** — query `certificates` table (public RLS policy), display result or "not found"
+18. **QR code scanning** support (link format)
+
+### Phase 9 — Dashboard (Dynamic)
+Currently all mock stats. Needs:
+
+19. **Real stats** from DB (count certificates, templates, recipients, monthly activity)
+20. **Recent activity** feed from actual certificate issuance records
+21. **Dynamic greeting** using logged-in user's name
+
+### Phase 10 — Analytics (Dynamic)
+Currently hardcoded. Needs:
+
+22. **Real analytics** — certificate views, shares, issuance trends from `certificate_views`
+23. **Charts** using Recharts (already installed) with real data
+24. **Date range filters**
+
+### Phase 11 — Recipient Portfolio (Dynamic)
+Currently hardcoded. Needs:
+
+25. **Fetch recipient's certificates** from DB by logged-in user's email
+26. **Share certificate** link generation
+27. **Download certificate** PDF
+28. **Public portfolio URL** (shareable link for recipients)
+
+### Phase 12 — Certificate Detail Page
+29. **Dynamic certificate detail** — fetch by ID, render template preview
+30. **Social sharing** meta tags / Open Graph
+
+### Phase 13 — Pricing & Payments (if applicable)
+31. **Stripe integration** for paid plans
+32. **Usage limits** enforcement (free tier certificate cap)
+33. **Plan management** in Settings
+
+### Phase 14 — Polish & Production Readiness
+34. **Email verification flow** end-to-end testing
+35. **Error boundaries** and loading states on all pages
+36. **Mobile responsiveness** audit across all pages
+37. **SEO** — meta tags, Open Graph for shared certificates
+38. **Rate limiting** on public verification endpoint
+
+---
+
+## Suggested Build Order
+
+I recommend tackling these in this sequence, one phase at a time:
+
+1. **Database tables** (templates, certificates, certificate_views) — foundation for everything
+2. **Template CRUD** — save/load/edit templates
+3. **Certificate issuance** — single + bulk, with unique IDs
+4. **Dynamic dashboard + certificates list** — wire up real data
+5. **Verification page** — public lookup
+6. **Recipient portfolio** — dynamic
+7. **Analytics** — real charts
+8. **PDF generation + email delivery** — edge functions
+9. **Payments** (if needed)
+
+Which phase would you like to start with?
 
