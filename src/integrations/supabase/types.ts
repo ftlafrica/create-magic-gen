@@ -14,6 +14,91 @@ export type Database = {
   }
   public: {
     Tables: {
+      certificate_views: {
+        Row: {
+          certificate_id: string
+          id: string
+          user_agent: string | null
+          viewed_at: string | null
+          viewer_ip: string | null
+        }
+        Insert: {
+          certificate_id: string
+          id?: string
+          user_agent?: string | null
+          viewed_at?: string | null
+          viewer_ip?: string | null
+        }
+        Update: {
+          certificate_id?: string
+          id?: string
+          user_agent?: string | null
+          viewed_at?: string | null
+          viewer_ip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificate_views_certificate_id_fkey"
+            columns: ["certificate_id"]
+            isOneToOne: false
+            referencedRelation: "certificates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      certificates: {
+        Row: {
+          certificate_code: string
+          course_name: string | null
+          created_at: string | null
+          id: string
+          issue_date: string
+          issuer_id: string
+          metadata: Json | null
+          recipient_email: string
+          recipient_name: string
+          status: string
+          template_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          certificate_code?: string
+          course_name?: string | null
+          created_at?: string | null
+          id?: string
+          issue_date?: string
+          issuer_id: string
+          metadata?: Json | null
+          recipient_email: string
+          recipient_name: string
+          status?: string
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          certificate_code?: string
+          course_name?: string | null
+          created_at?: string | null
+          id?: string
+          issue_date?: string
+          issuer_id?: string
+          metadata?: Json | null
+          recipient_email?: string
+          recipient_name?: string
+          status?: string
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -37,6 +122,45 @@ export type Database = {
           full_name?: string | null
           id?: string
           organization?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      templates: {
+        Row: {
+          background_color: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_default: boolean | null
+          layout_json: Json
+          logo_url: string | null
+          name: string
+          owner_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          background_color?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_default?: boolean | null
+          layout_json?: Json
+          logo_url?: string | null
+          name: string
+          owner_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          background_color?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_default?: boolean | null
+          layout_json?: Json
+          logo_url?: string | null
+          name?: string
+          owner_id?: string
           updated_at?: string | null
         }
         Relationships: []
