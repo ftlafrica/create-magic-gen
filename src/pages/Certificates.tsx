@@ -53,7 +53,7 @@ const Certificates = () => {
 
   // Fetch certificates
   const { data, isLoading } = useQuery({
-    queryKey: ["certificates", user?.id, search, filterTemplate, page],
+    queryKey: ["certificates", user?.id, search, filterTemplate, filterCourse, page],
     queryFn: async () => {
       let query = supabase
         .from("certificates")
