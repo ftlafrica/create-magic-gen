@@ -152,8 +152,13 @@ const Certificates = () => {
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>
           ) : certificates.length === 0 ? (
-            <div className="text-center py-20 text-muted-foreground">
-              <p className="text-lg">No certificates found</p>
+            <div className="text-center py-20">
+              <Award className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
+              <h3 className="text-xl font-bold mb-2">No certificates found</h3>
+              <p className="text-muted-foreground mb-6">Issue your first certificate to get started.</p>
+              <Link to="/issue-certificate">
+                <Button variant="cta">Issue Certificate</Button>
+              </Link>
             </div>
           ) : (
             <div className="overflow-x-auto">
