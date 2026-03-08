@@ -1,71 +1,52 @@
 
 
-# Phase 2: Logo Update, Favicon, Futuristic Animations, and Hero Refinement
+# Batch Email Notification for Certificate Issuance
 
-## 1. Logo and Favicon Update
+## Overview
+Create an edge function that sends notification emails to recipients when certificates are issued, callable from both single and bulk issuance flows.
 
-- Copy `AfriCertify_Logo_2.png` to `src/assets/africertify-logo.png` (replacing current)
-- Copy `AfriCertify_Favicon.png` to `public/favicon.png` (replacing current)
-- No component changes needed -- `AfriCertifyLogo.tsx` already imports from the same path
+## Approach
+Use Lovable AI's built-in capabilities to avoid requiring external API keys. The edge function will use the Resend-style email sending via the Supabase built-in `SUPABASE_SERVICE_ROLE_KEY` and auth admin features — but since we don't have a custom email domain or Resend key, we'll use **Supabase's built-in `auth.admin.generateLink`** approach won't work for arbitrary emails.
 
-## 2. Hero UI Refinement
+**Better approach**: Create an edge function that uses Resend (requires API key) or leverage a connector.
 
-- Redesign the hero with a more dramatic, futuristic layout:
-  - Add animated floating circuit-pattern particles in the background (CSS-only with keyframes)
-  - Refine the gradient to use deeper blues with gold/neon accents matching the new logo's gold "AC"
-  - Add a floating glow orb animation behind the hero image
-  - Stagger text animations for headline words for a cinematic reveal effect
-  - Add a subtle grid/scan-line overlay for a cyberpunk feel
-  - Improve the stat counters with animated count-up effect using framer-motion
+Actually, the simplest reliable approach: Create an edge function `send-certificate-emails` that accepts an array of `{recipient_name, recipient_email, certificate_id, course_name}` and sends emails. We need an email-sending service.
 
-## 3. Futuristic Animations Across the App
+Let me check available connectors and options.
 
-### Page Transitions
-- Wrap routes in `AnimatePresence` with fade+slide transitions between pages in `App.tsx`
+Since no email connector is natively available and no API keys are configured, we have two options:
 
-### Animated Background Component
-- Create a reusable `CircuitBackground` component with CSS-animated floating dots and connection lines
-- Apply to Hero section and Dashboard background
+1. **Ask user for a Resend API key** — store as a secret, use in edge function
+2. **Use Lovable AI** — not applicable for email sending
 
-### Enhanced Card Interactions
-- Add glow-on-hover effect to all Cards (Features, Pricing, Dashboard stats)
-- Scale-up with border glow on hover using Tailwind + CSS transitions
+**Recommendation**: Use Resend (free tier supports 100 emails/day). We'll need the user to provide a `RESEND_API_KEY`.
 
-### Futuristic Loading Spinner
-- Create a `NeonSpinner` component with orbiting rings animation for use across the app
+## Implementation Plan
 
-### CSS Keyframes to Add (in tailwind.config.ts)
-- `float` -- gentle vertical bob for floating elements
-- `glow-pulse` -- neon glow intensity cycling
-- `scan-line` -- horizontal scan effect for cyberpunk feel
-- `circuit-flow` -- animated dashes along circuit paths
+### 1. Create edge function `send-certificate-emails`
+- Accepts POST with array of recipients: `{recipient_name, recipient_email, certificate_id, course_name, issuer_name}`
+- Uses Resend API to send branded HTML emails with certificate details and a verification link
+- Returns success/failure counts
+- Includes CORS headers and JWT validation
 
-### Typography Hover Effects
-- Add subtle letter-spacing expansion on heading hover via CSS class
+### 2. Update `IssueCertificate.tsx`
+- After successful single insert: query the inserted certificate's ID, then call the edge function with one recipient
+- After successful bulk insert: query the inserted certificates, then call the edge function with all recipients
+- Add a "Send email notifications" toggle (default on) so issuers can opt out
+- Show toast with email delivery results
 
-### Dashboard Enhancements
-- Stagger card entrance animations with increasing delays
-- Add pulsing glow borders on stat cards
+### 3. Email template (inline in edge function)
+- Branded HTML email matching AfriCertify's dark blue/neon theme
+- Contains: recipient name, course/achievement name, issuer organization, verification link (`/certificate/:id`)
+- Mobile-responsive
 
-## 4. Low Data Mode Foundation
-- Add a CSS class `.reduce-motion` that disables all custom animations
-- Respect `prefers-reduced-motion` media query globally in CSS
+### 4. Secret setup
+- Will need `RESEND_API_KEY` from the user before the edge function can send emails
 
-## Files to Change
-
-| File | Change |
-|------|--------|
-| `src/assets/africertify-logo.png` | Replace with new logo |
-| `public/favicon.png` | Replace with new favicon |
-| `src/components/Hero.tsx` | Redesign with circuit bg, staggered text, refined colors |
-| `src/components/CircuitBackground.tsx` | New -- animated particle/circuit CSS component |
-| `src/components/NeonSpinner.tsx` | New -- futuristic loading spinner |
-| `src/components/PageTransition.tsx` | New -- AnimatePresence wrapper |
-| `src/App.tsx` | Wrap routes with PageTransition |
-| `src/index.css` | Add keyframes, glow utilities, reduced-motion support |
-| `tailwind.config.ts` | Add float, glow-pulse, scan-line keyframes and animations |
-| `src/components/Features.tsx` | Enhanced hover glow effects |
-| `src/components/Pricing.tsx` | Enhanced card animations |
-| `src/components/Navbar.tsx` | Subtle backdrop glow refinement |
-| `src/pages/Dashboard.tsx` | Enhanced stat card animations |
+## Steps
+1. Request `RESEND_API_KEY` secret from user
+2. Create `supabase/functions/send-certificate-emails/index.ts`
+3. Update `supabase/config.toml` with `verify_jwt = false` for the function
+4. Update `IssueCertificate.tsx` — add notification toggle, call edge function after issuance
+5. Deploy edge function
 
