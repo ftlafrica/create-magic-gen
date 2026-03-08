@@ -1,43 +1,83 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { 
-  FileText, 
-  PlusCircle, 
-  Award, 
+import {
+  FileText,
+  PlusCircle,
+  Award,
   TrendingUp,
   Calendar,
-  Users
+  Users,
+  Loader2,
 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { formatDistanceToNow } from "date-fns";
 
 const Dashboard = () => {
-  const stats = [
-    { label: "Certificates Issued", value: "35", max: "50", icon: Award, color: "text-secondary" },
-    { label: "Templates Created", value: "8", max: "∞", icon: FileText, color: "text-accent" },
-    { label: "This Month", value: "15", icon: Calendar, color: "text-cta" },
-    { label: "Total Recipients", value: "142", icon: Users, color: "text-secondary" },
-  ];
+  const { user, profile } = useAuth();
 
-  const recentActivity = [
-    { recipient: "Samuel Okonkwo", certificate: "Data Science Fundamentals", date: "2 hours ago" },
-    { recipient: "Amina Ibrahim", certificate: "Product Management", date: "5 hours ago" },
-    { recipient: "Chidi Eze", certificate: "Data Science Fundamentals", date: "1 day ago" },
-    { recipient: "Fatima Musa", certificate: "Digital Marketing", date: "2 days ago" },
-    { recipient: "Tunde Adebayo", certificate: "Product Management", date: "3 days ago" },
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["dashboard-stats", user?.id],
+    queryFn: async () => {
+      const now = new Date();
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+      const [certsRes, templatesRes, monthRes, recipientsRes] = await Promise.all([
+        supabase.from("certificates").select("id", { count: "exact", head: true }),
+        supabase.from("templates").select("id", { count: "exact", head: true }),
+        supabase.from("certificates").select("id", { count: "exact", head: true }).gte("created_at", startOfMonth),
+        supabase.from("certificates").select("recipient_email"),
+      ]);
+
+      const uniqueRecipients = new Set(recipientsRes.data?.map((r) => r.recipient_email) || []).size;
+
+      return {
+        totalCerts: certsRes.count || 0,
+        totalTemplates: templatesRes.count || 0,
+        thisMonth: monthRes.count || 0,
+        totalRecipients: uniqueRecipients,
+      };
+    },
+    enabled: !!user,
+  });
+
+  const { data: recentActivity = [] } = useQuery({
+    queryKey: ["recent-activity", user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("certificates")
+        .select("recipient_name, course_name, created_at")
+        .order("created_at", { ascending: false })
+        .limit(5);
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  const displayName = profile?.full_name || user?.email?.split("@")[0] || "there";
+
+  const statCards = [
+    { label: "Certificates Issued", value: stats?.totalCerts ?? "—", icon: Award, color: "text-secondary" },
+    { label: "Templates Created", value: stats?.totalTemplates ?? "—", icon: FileText, color: "text-accent" },
+    { label: "This Month", value: stats?.thisMonth ?? "—", icon: Calendar, color: "text-cta" },
+    { label: "Total Recipients", value: stats?.totalRecipients ?? "—", icon: Users, color: "text-secondary" },
   ];
 
   return (
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Welcome back, Dr. Bello!</h1>
+          <h1 className="text-4xl font-bold mb-2">Welcome back, {displayName}!</h1>
           <p className="text-muted-foreground text-lg">Here's what's happening with your certificates</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
+          {statCards.map((stat, index) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}
@@ -46,14 +86,13 @@ const Dashboard = () => {
             >
               <Card className="p-6 bg-card/80 backdrop-blur-sm border-border glow-card">
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-${stat.color.split('-')[1]}/20 to-transparent flex items-center justify-center`}>
+                  <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center">
                     <stat.icon className={`w-6 h-6 ${stat.color}`} />
                   </div>
-                  {stat.max && (
-                    <span className="text-xs text-muted-foreground">/ {stat.max}</span>
-                  )}
                 </div>
-                <p className="text-3xl font-bold mb-1">{stat.value}</p>
+                <p className="text-3xl font-bold mb-1">
+                  {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : stat.value}
+                </p>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
               </Card>
             </motion.div>
@@ -84,19 +123,30 @@ const Dashboard = () => {
           <Card className="p-6 bg-card/80 backdrop-blur-sm">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">Recent Activity</h2>
-              <Button variant="ghost" size="sm">View All</Button>
+              <Link to="/certificates">
+                <Button variant="ghost" size="sm">View All</Button>
+              </Link>
             </div>
-            <div className="space-y-4">
-              {recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between py-3 border-b border-border last:border-0">
-                  <div>
-                    <p className="font-medium">{activity.recipient}</p>
-                    <p className="text-sm text-muted-foreground">{activity.certificate}</p>
+            {recentActivity.length === 0 ? (
+              <p className="text-muted-foreground text-center py-8">No certificates issued yet</p>
+            ) : (
+              <div className="space-y-4">
+                {recentActivity.map((activity, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between py-3 border-b border-border last:border-0"
+                  >
+                    <div>
+                      <p className="font-medium">{activity.recipient_name}</p>
+                      <p className="text-sm text-muted-foreground">{activity.course_name || "Certificate"}</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground">
+                      {formatDistanceToNow(new Date(activity.created_at), { addSuffix: true })}
+                    </span>
                   </div>
-                  <span className="text-xs text-muted-foreground">{activity.date}</span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </Card>
         </div>
 
