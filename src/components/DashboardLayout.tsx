@@ -26,6 +26,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { profile, roles, signOut } = useAuth();
 
   const isRecipient = roles.includes("recipient");
+  const isAdmin = roles.includes("admin");
 
   const issuerNav = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
