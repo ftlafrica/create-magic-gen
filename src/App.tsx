@@ -20,6 +20,8 @@ import Certificates from "./pages/Certificates";
 import Analytics from "./pages/Analytics";
 import RecipientPortfolio from "./pages/RecipientPortfolio";
 import CertificateDetail from "./pages/CertificateDetail";
+import Settings from "./pages/Settings";
+import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
