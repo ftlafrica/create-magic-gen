@@ -45,6 +45,7 @@ const AnimatedRoutes = () => {
         <Route path="/dashboard" element={<ProtectedRoute><PageTransition><Dashboard /></PageTransition></ProtectedRoute>} />
         <Route path="/templates" element={<ProtectedRoute><PageTransition><Templates /></PageTransition></ProtectedRoute>} />
         <Route path="/template-editor" element={<ProtectedRoute><PageTransition><TemplateEditor /></PageTransition></ProtectedRoute>} />
+        <Route path="/template-editor/:id" element={<ProtectedRoute><PageTransition><TemplateEditor /></PageTransition></ProtectedRoute>} />
         <Route path="/issue-certificate" element={<ProtectedRoute><PageTransition><IssueCertificate /></PageTransition></ProtectedRoute>} />
         <Route path="/certificates" element={<ProtectedRoute><PageTransition><Certificates /></PageTransition></ProtectedRoute>} />
         <Route path="/analytics" element={<ProtectedRoute><PageTransition><Analytics /></PageTransition></ProtectedRoute>} />
