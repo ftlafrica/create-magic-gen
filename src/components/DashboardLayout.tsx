@@ -9,7 +9,8 @@ import {
   Settings,
   LogOut,
   Menu,
-  Briefcase
+  Briefcase,
+  Shield
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -26,6 +27,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { profile, roles, signOut } = useAuth();
 
   const isRecipient = roles.includes("recipient");
+  const isAdmin = roles.includes("admin");
 
   const issuerNav = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
@@ -41,7 +43,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     { icon: Settings, label: "Settings", path: "/settings" },
   ];
 
-  const navItems = isRecipient ? recipientNav : issuerNav;
+  const baseNav = isRecipient ? recipientNav : issuerNav;
+  const navItems = isAdmin
+    ? [...baseNav, { icon: Shield, label: "Admin", path: "/admin" }]
+    : baseNav;
 
   const initials = profile?.full_name
     ?.split(" ")
