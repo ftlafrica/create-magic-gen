@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import CertificateRenderer from "@/components/CertificateRenderer";
 import html2canvas from "html2canvas";
+// @ts-ignore
 import jsPDF from "jspdf";
 
 const CertificateDetail = () => {
