@@ -37,6 +37,7 @@ const Certificates = () => {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [filterTemplate, setFilterTemplate] = useState("");
+  const [filterCourse, setFilterCourse] = useState("");
   const [page, setPage] = useState(0);
 
   // Fetch templates for filter dropdown
@@ -52,7 +53,7 @@ const Certificates = () => {
 
   // Fetch certificates
   const { data, isLoading } = useQuery({
-    queryKey: ["certificates", user?.id, search, filterTemplate, page],
+    queryKey: ["certificates", user?.id, search, filterTemplate, filterCourse, page],
     queryFn: async () => {
       let query = supabase
         .from("certificates")
@@ -65,6 +66,9 @@ const Certificates = () => {
       }
       if (filterTemplate) {
         query = query.eq("template_id", filterTemplate);
+      }
+      if (filterCourse) {
+        query = query.ilike("course_name", `%${filterCourse}%`);
       }
 
       const { data, error, count } = await query;
@@ -125,8 +129,8 @@ const Certificates = () => {
         </div>
 
         <Card className="p-6 bg-card/80 backdrop-blur-sm">
-          <div className="flex gap-4 mb-6">
-            <div className="relative flex-1">
+          <div className="flex flex-wrap gap-4 mb-6">
+            <div className="relative flex-1 min-w-[200px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 placeholder="Search by name, email, or code..."
@@ -136,7 +140,7 @@ const Certificates = () => {
               />
             </div>
             <select
-              className="h-12 rounded-md border border-input bg-background px-4 min-w-[200px]"
+              className="h-12 rounded-md border border-input bg-background px-4 min-w-[180px]"
               value={filterTemplate}
               onChange={(e) => { setFilterTemplate(e.target.value); setPage(0); }}
             >
@@ -145,6 +149,12 @@ const Certificates = () => {
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </select>
+            <Input
+              placeholder="Filter by course..."
+              className="h-12 min-w-[180px] max-w-[220px]"
+              value={filterCourse}
+              onChange={(e) => { setFilterCourse(e.target.value); setPage(0); }}
+            />
           </div>
 
           {isLoading ? (
