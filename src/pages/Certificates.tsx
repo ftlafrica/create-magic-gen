@@ -9,6 +9,7 @@ import {
   Ban,
   Loader2,
   RotateCcw,
+  Award,
 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +17,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const PAGE_SIZE = 20;
 
