@@ -67,6 +67,9 @@ const Certificates = () => {
       if (filterTemplate) {
         query = query.eq("template_id", filterTemplate);
       }
+      if (filterCourse) {
+        query = query.ilike("course_name", `%${filterCourse}%`);
+      }
 
       const { data, error, count } = await query;
       if (error) throw error;
