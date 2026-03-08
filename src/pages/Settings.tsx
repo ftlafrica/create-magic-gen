@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Save, Lock } from "lucide-react";
+import { Save, Lock, Mail, Shield } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 const Settings = () => {
   const { user, profile } = useAuth();
@@ -22,6 +24,18 @@ const Settings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
+
+  const { data: roles = [] } = useQuery({
+    queryKey: ["user-roles", user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user!.id);
+      return data?.map((r) => r.role) ?? [];
+    },
+    enabled: !!user,
+  });
 
   useEffect(() => {
     if (profile) {
@@ -79,6 +93,40 @@ const Settings = () => {
           <h1 className="text-3xl font-bold">Settings</h1>
           <p className="text-muted-foreground mt-1">Manage your account and profile</p>
         </div>
+
+        {/* Account Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Account</CardTitle>
+            <CardDescription>Your account details</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-3">
+              <Mail className="w-5 h-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="font-medium">{user?.email}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Shield className="w-5 h-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm text-muted-foreground">Roles</p>
+                <div className="flex gap-2 mt-1">
+                  {roles.length > 0 ? (
+                    roles.map((role) => (
+                      <Badge key={role} variant="secondary" className="capitalize">
+                        {role}
+                      </Badge>
+                    ))
+                  ) : (
+                    <Badge variant="outline">No roles</Badge>
+                  )}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
