@@ -1,12 +1,53 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Mail, Lock, User, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const SignUp = () => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState<"issuer" | "recipient">("issuer");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password.length < 8) {
+      toast({ title: "Password must be at least 8 characters", variant: "destructive" });
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName, role },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    setLoading(false);
+
+    if (error) {
+      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+      return;
+    }
+
+    toast({
+      title: "Account created!",
+      description: "Check your email to confirm your account.",
+    });
+    navigate("/signin");
+  };
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-background via-primary to-background">
@@ -37,7 +78,7 @@ const SignUp = () => {
             <p className="text-muted-foreground">Start issuing verifiable certificates today</p>
           </div>
 
-          <form className="space-y-6">
+          <form onSubmit={handleSignUp} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
               <div className="relative">
@@ -47,6 +88,9 @@ const SignUp = () => {
                   type="text"
                   placeholder="Dr. Jane Bello"
                   className="pl-10"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -60,6 +104,9 @@ const SignUp = () => {
                   type="email"
                   placeholder="you@example.com"
                   className="pl-10"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -73,13 +120,45 @@ const SignUp = () => {
                   type="password"
                   placeholder="••••••••"
                   className="pl-10"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
               <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
             </div>
 
-            <Button variant="cta" className="w-full" size="lg">
-              Create Account
+            {/* Role selector */}
+            <div className="space-y-2">
+              <Label>I want to</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setRole("issuer")}
+                  className={`p-3 rounded-lg border text-sm font-medium transition-all ${
+                    role === "issuer"
+                      ? "border-secondary bg-secondary/10 text-secondary"
+                      : "border-border text-muted-foreground hover:border-secondary/50"
+                  }`}
+                >
+                  Issue Certificates
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRole("recipient")}
+                  className={`p-3 rounded-lg border text-sm font-medium transition-all ${
+                    role === "recipient"
+                      ? "border-secondary bg-secondary/10 text-secondary"
+                      : "border-border text-muted-foreground hover:border-secondary/50"
+                  }`}
+                >
+                  Receive Certificates
+                </button>
+              </div>
+            </div>
+
+            <Button variant="cta" className="w-full" size="lg" disabled={loading}>
+              {loading ? "Creating account..." : "Create Account"}
             </Button>
 
             <div className="relative">
@@ -91,7 +170,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            <Button variant="outline" className="w-full" size="lg">
+            <Button variant="outline" className="w-full" size="lg" type="button">
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
