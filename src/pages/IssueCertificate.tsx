@@ -41,7 +41,6 @@ const IssueCertificate = () => {
   const navigate = useNavigate();
   const csvInputRef = useRef<HTMLInputElement>(null);
 
-  // Single issue state
   const [templateId, setTemplateId] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [recipientEmail, setRecipientEmail] = useState("");
@@ -49,7 +48,6 @@ const IssueCertificate = () => {
   const [issueDate, setIssueDate] = useState(new Date().toISOString().split("T")[0]);
   const [issuing, setIssuing] = useState(false);
 
-  // Bulk state
   const [bulkTemplateId, setBulkTemplateId] = useState("");
   const [csvRows, setCsvRows] = useState<CsvRow[]>([]);
   const [csvFileName, setCsvFileName] = useState("");
@@ -58,10 +56,17 @@ const IssueCertificate = () => {
   const { data: templates = [] } = useQuery({
     queryKey: ["templates", user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("templates")
-        .select("id, name")
-        .order("name");
+      const { data, error } = await supabase.from("templates").select("id, name").order("name");
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  const { data: courses = [] } = useQuery({
+    queryKey: ["courses", user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("courses").select("id, name").order("name");
       if (error) throw error;
       return data;
     },
@@ -204,9 +209,19 @@ const IssueCertificate = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="course-name">Course/Achievement Name</Label>
-                  <Input
+                  <select
                     id="course-name"
-                    placeholder="e.g., Data Science Fundamentals"
+                    className="w-full h-12 rounded-md border border-input bg-background px-4"
+                    value={courseName}
+                    onChange={(e) => setCourseName(e.target.value)}
+                  >
+                    <option value="">Select a course or type below</option>
+                    {courses.map((c) => (
+                      <option key={c.id} value={c.name}>{c.name}</option>
+                    ))}
+                  </select>
+                  <Input
+                    placeholder="Or type a custom course/achievement name"
                     className="h-12"
                     value={courseName}
                     onChange={(e) => setCourseName(e.target.value)}

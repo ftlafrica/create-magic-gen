@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PlusCircle, Edit, Copy, Trash2, Loader2 } from "lucide-react";
+import { PlusCircle, Edit, Copy, Trash2, Loader2, FileText } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +9,17 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import certificateMockup from "@/assets/certificate-mockup.jpg";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const Templates = () => {
   const { user } = useAuth();
@@ -56,7 +66,6 @@ const Templates = () => {
     onError: () => toast.error("Failed to duplicate template"),
   });
 
-  // Count certificates per template
   const { data: certCounts = {} } = useQuery({
     queryKey: ["template-cert-counts", user?.id],
     queryFn: async () => {
@@ -95,7 +104,9 @@ const Templates = () => {
           </div>
         ) : templates.length === 0 ? (
           <Card className="p-12 text-center bg-card/80 backdrop-blur-sm">
-            <p className="text-muted-foreground text-lg mb-4">No templates yet. Create your first one!</p>
+            <FileText className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
+            <h3 className="text-xl font-bold mb-2">No templates yet</h3>
+            <p className="text-muted-foreground mb-6">Create your first certificate template to get started.</p>
             <Link to="/template-editor">
               <Button variant="cta">
                 <PlusCircle className="w-5 h-5 mr-2" />
@@ -137,14 +148,31 @@ const Templates = () => {
                         >
                           <Copy className="w-4 h-4" />
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive hover:text-destructive"
-                          onClick={() => deleteMutation.mutate(template.id)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete template?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently delete "{template.name}". Certificates using this template will not be affected.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => deleteMutation.mutate(template.id)}>
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   </div>

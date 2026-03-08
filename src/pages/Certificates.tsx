@@ -9,6 +9,7 @@ import {
   Ban,
   Loader2,
   RotateCcw,
+  Award,
 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +17,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const PAGE_SIZE = 20;
 
@@ -140,8 +152,13 @@ const Certificates = () => {
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>
           ) : certificates.length === 0 ? (
-            <div className="text-center py-20 text-muted-foreground">
-              <p className="text-lg">No certificates found</p>
+            <div className="text-center py-20">
+              <Award className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
+              <h3 className="text-xl font-bold mb-2">No certificates found</h3>
+              <p className="text-muted-foreground mb-6">Issue your first certificate to get started.</p>
+              <Link to="/issue-certificate">
+                <Button variant="cta">Issue Certificate</Button>
+              </Link>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -192,14 +209,31 @@ const Certificates = () => {
                             <Eye className="w-4 h-4" />
                           </Button>
                           {cert.status === "issued" ? (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-destructive hover:text-destructive"
-                              onClick={() => revokeMutation.mutate(cert.id)}
-                            >
-                              <Ban className="w-4 h-4" />
-                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-destructive hover:text-destructive"
+                                >
+                                  <Ban className="w-4 h-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Revoke certificate?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This will revoke the certificate for {cert.recipient_name}. The certificate will be marked as invalid.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => revokeMutation.mutate(cert.id)}>
+                                    Revoke
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           ) : (
                             <Button
                               variant="ghost"

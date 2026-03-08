@@ -1,9 +1,9 @@
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Share2, Download, Copy, CheckCircle2, Building2, Calendar, ArrowLeft, User, XCircle } from "lucide-react";
+import { Share2, Download, Copy, CheckCircle2, Calendar, ArrowLeft, User, XCircle, Loader2 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import certificateMockup from "@/assets/certificate-mockup.jpg";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,9 +11,15 @@ import { format } from "date-fns";
 import NeonSpinner from "@/components/NeonSpinner";
 import { Badge } from "@/components/ui/badge";
 import { useEffect } from "react";
+import { QRCodeSVG } from "qrcode.react";
+import CertificateRenderer from "@/components/CertificateRenderer";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const CertificateDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const certRef = useRef<HTMLDivElement>(null);
+  const [downloading, setDownloading] = useState(false);
 
   const { data: certificate, isLoading, error } = useQuery({
     queryKey: ["certificate-detail", id],
@@ -27,6 +33,19 @@ const CertificateDetail = () => {
       return data;
     },
     enabled: !!id,
+  });
+
+  const { data: template } = useQuery({
+    queryKey: ["certificate-template", certificate?.template_id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("templates")
+        .select("*")
+        .eq("id", certificate!.template_id!)
+        .single();
+      return data;
+    },
+    enabled: !!certificate?.template_id,
   });
 
   const { data: issuerProfile } = useQuery({
@@ -64,6 +83,27 @@ const CertificateDetail = () => {
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, "_blank");
   };
 
+  const handleDownloadPdf = async () => {
+    if (!certRef.current) return;
+    setDownloading(true);
+    try {
+      const canvas = await html2canvas(certRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [canvas.width / 2, canvas.height / 2] });
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width / 2, canvas.height / 2);
+      pdf.save(`certificate-${certificate?.certificate_code || "download"}.pdf`);
+      toast.success("Certificate downloaded!");
+    } catch {
+      toast.error("Failed to generate PDF");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -90,6 +130,9 @@ const CertificateDetail = () => {
   const issuerName = issuerProfile?.organization || issuerProfile?.full_name || "Unknown Issuer";
   const issuerInitial = issuerName.charAt(0).toUpperCase();
   const isRevoked = certificate.status === "revoked";
+  const verifyUrl = `${window.location.origin}/certificate/${certificate.id}`;
+
+  const layoutJson = template?.layout_json as any;
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -104,7 +147,6 @@ const CertificateDetail = () => {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-8"
         >
-          {/* Revoked Banner */}
           {isRevoked && (
             <Card className="p-4 bg-destructive/10 border-destructive/30">
               <div className="flex items-center gap-3">
@@ -114,16 +156,30 @@ const CertificateDetail = () => {
             </Card>
           )}
 
-          {/* Certificate Display */}
-          <Card className="p-8 bg-card/80 backdrop-blur-lg border-secondary/30">
-            <img
-              src={certificateMockup}
-              alt="Certificate"
-              className="w-full rounded-lg shadow-2xl mb-8"
-            />
+          {/* Certificate Render (visible preview) */}
+          <Card className="p-4 bg-card/80 backdrop-blur-lg border-secondary/30 overflow-hidden">
+            <div className="w-full overflow-x-auto flex justify-center">
+              <div style={{ transform: "scale(0.65)", transformOrigin: "top center" }}>
+                <CertificateRenderer
+                  ref={certRef}
+                  recipientName={certificate.recipient_name}
+                  courseName={certificate.course_name}
+                  issueDate={format(new Date(certificate.issue_date), "MMMM d, yyyy")}
+                  certificateCode={certificate.certificate_code}
+                  certificateId={certificate.id}
+                  issuerName={issuerName}
+                  logoUrl={template?.logo_url}
+                  backgroundColor={template?.background_color || "#001F3F"}
+                  textColor={layoutJson?.textColor || "#FFFFFF"}
+                  fontFamily={layoutJson?.fontFamily || "Bebas Neue"}
+                  fontSize={layoutJson?.fontSize || 24}
+                  alignment={layoutJson?.alignment || "center"}
+                />
+              </div>
+            </div>
 
             {/* Action Buttons */}
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-4 mt-6">
               <Button variant="hero" size="lg" className="w-full" onClick={handleShareLinkedIn}>
                 <Share2 className="w-5 h-5 mr-2" />
                 Share to LinkedIn
@@ -132,8 +188,8 @@ const CertificateDetail = () => {
                 <Copy className="w-5 h-5 mr-2" />
                 Copy Verification Link
               </Button>
-              <Button variant="outline" size="lg" className="w-full">
-                <Download className="w-5 h-5 mr-2" />
+              <Button variant="outline" size="lg" className="w-full" onClick={handleDownloadPdf} disabled={downloading}>
+                {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
                 Download PDF
               </Button>
             </div>
@@ -188,6 +244,14 @@ const CertificateDetail = () => {
                     {issuerProfile?.organization && issuerProfile.full_name && (
                       <p className="text-sm text-muted-foreground">by {issuerProfile.full_name}</p>
                     )}
+                  </div>
+                </div>
+
+                {/* QR Code */}
+                <div className="mt-4 pt-4 border-t border-border">
+                  <p className="text-sm text-muted-foreground mb-3">Scan to verify</p>
+                  <div className="bg-white p-3 rounded-lg inline-block">
+                    <QRCodeSVG value={verifyUrl} size={100} />
                   </div>
                 </div>
               </div>

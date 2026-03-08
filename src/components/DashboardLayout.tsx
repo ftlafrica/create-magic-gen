@@ -10,7 +10,8 @@ import {
   LogOut,
   Menu,
   Briefcase,
-  Shield
+  Shield,
+  BookOpen
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -32,6 +33,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const issuerNav = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
     { icon: FileText, label: "Templates", path: "/templates" },
+    { icon: BookOpen, label: "Courses", path: "/courses" },
     { icon: Award, label: "Certificates", path: "/certificates" },
     { icon: BarChart3, label: "Analytics", path: "/analytics" },
     { icon: Settings, label: "Settings", path: "/settings" },
