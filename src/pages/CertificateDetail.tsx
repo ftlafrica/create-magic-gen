@@ -71,6 +71,37 @@ const CertificateDetail = () => {
     });
   }, [certificate?.id]);
 
+  // Set OG meta tags dynamically
+  useEffect(() => {
+    if (!certificate) return;
+    const title = `${certificate.recipient_name} — ${certificate.course_name || "Certificate"} | AfriCertify`;
+    const description = `Verified certificate for ${certificate.recipient_name}. ${certificate.course_name ? `Achievement: ${certificate.course_name}.` : ""} Issued on ${certificate.issue_date}. Verify at AfriCertify.`;
+
+    document.title = title;
+
+    const setMeta = (property: string, content: string) => {
+      let tag = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement | null;
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    setMeta("og:title", title);
+    setMeta("og:description", description);
+    setMeta("og:type", "website");
+    setMeta("og:url", window.location.href);
+    setMeta("twitter:card", "summary");
+    setMeta("twitter:title", title);
+    setMeta("twitter:description", description);
+
+    return () => {
+      document.title = "AfriCertify";
+    };
+  }, [certificate]);
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Verification link copied to clipboard!");
