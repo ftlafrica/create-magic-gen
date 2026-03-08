@@ -8,9 +8,9 @@ interface AfriCertifyLogoProps {
 }
 
 const sizeMap = {
-  sm: { img: "h-9", text: "text-lg", tagline: "text-[9px]" },
-  md: { img: "h-11", text: "text-xl", tagline: "text-[10px]" },
-  lg: { img: "h-16", text: "text-2xl", tagline: "text-xs" },
+  sm: { img: "h-12", text: "text-lg", tagline: "text-[9px]" },
+  md: { img: "h-14", text: "text-xl", tagline: "text-[10px]" },
+  lg: { img: "h-20", text: "text-2xl", tagline: "text-xs" },
 };
 
 const AfriCertifyLogo = ({ size = "md", showText = false, showTagline = false }: AfriCertifyLogoProps) => {
