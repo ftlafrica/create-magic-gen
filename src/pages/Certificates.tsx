@@ -37,6 +37,7 @@ const Certificates = () => {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [filterTemplate, setFilterTemplate] = useState("");
+  const [filterCourse, setFilterCourse] = useState("");
   const [page, setPage] = useState(0);
 
   // Fetch templates for filter dropdown
