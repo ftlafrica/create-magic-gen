@@ -30,7 +30,7 @@ const TemplateGallery = () => {
 
   const canUseTemplate = (template: PrebuiltTemplate) => {
     if (template.tier === "free") return true;
-    return userTier === "premium" || userTier === "business";
+    return (userTier as string) === "premium" || (userTier as string) === "business";
   };
 
   const handleUseTemplate = async (template: PrebuiltTemplate) => {
