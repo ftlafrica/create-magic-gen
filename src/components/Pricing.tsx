@@ -25,8 +25,9 @@ const plans = [
     description: "For individual educators and trainers",
     features: [
       "200 certificates per month",
-      "Unlimited templates",
-      "AI palette suggestions",
+      "All 14 pre-built templates",
+      "Upload up to 7 custom templates",
+      "3 AI template generation credits",
       "Priority support",
       "Analytics dashboard",
       "Custom branding"
