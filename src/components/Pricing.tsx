@@ -10,7 +10,7 @@ const plans = [
     description: "Perfect for trying out AfriCertify",
     features: [
       "10 certificates per month",
-      "2 templates",
+      "2 pre-built templates",
       "Basic customization",
       "Email support",
       "Recipient portfolio"
