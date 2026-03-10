@@ -15,6 +15,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Verify from "./pages/Verify";
 import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
+import TemplateGallery from "./pages/TemplateGallery";
 import TemplateEditor from "./pages/TemplateEditor";
 import IssueCertificate from "./pages/IssueCertificate";
 import Certificates from "./pages/Certificates";
