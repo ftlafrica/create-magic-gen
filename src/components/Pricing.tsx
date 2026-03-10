@@ -42,6 +42,9 @@ const plans = [
     description: "For growing organizations",
     features: [
       "1000 certificates per month",
+      "All 14 pre-built templates",
+      "Unlimited custom template uploads",
+      "Unlimited AI template generation",
       "Team collaboration (5 users)",
       "Advanced analytics",
       "API access",
