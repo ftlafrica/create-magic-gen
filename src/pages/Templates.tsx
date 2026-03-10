@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PlusCircle, Edit, Copy, Trash2, Loader2, FileText } from "lucide-react";
+import { PlusCircle, Edit, Copy, Trash2, Loader2, FileText, Sparkles } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -90,12 +90,20 @@ const Templates = () => {
             <h1 className="text-4xl font-bold mb-2">Certificate Templates</h1>
             <p className="text-muted-foreground text-lg">Create and manage your certificate designs</p>
           </div>
-          <Link to="/template-editor">
-            <Button variant="cta" size="lg">
-              <PlusCircle className="w-5 h-5 mr-2" />
-              Create New Template
-            </Button>
-          </Link>
+          <div className="flex gap-3">
+            <Link to="/template-gallery">
+              <Button variant="secondary" size="lg">
+                <Sparkles className="w-5 h-5 mr-2" />
+                Browse Gallery
+              </Button>
+            </Link>
+            <Link to="/template-editor">
+              <Button variant="cta" size="lg">
+                <PlusCircle className="w-5 h-5 mr-2" />
+                Create New Template
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {isLoading ? (

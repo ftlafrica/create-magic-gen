@@ -10,7 +10,7 @@ const plans = [
     description: "Perfect for trying out AfriCertify",
     features: [
       "10 certificates per month",
-      "2 templates",
+      "2 pre-built templates",
       "Basic customization",
       "Email support",
       "Recipient portfolio"
@@ -25,8 +25,9 @@ const plans = [
     description: "For individual educators and trainers",
     features: [
       "200 certificates per month",
-      "Unlimited templates",
-      "AI palette suggestions",
+      "All 14 pre-built templates",
+      "Upload up to 7 custom templates",
+      "3 AI template generation credits",
       "Priority support",
       "Analytics dashboard",
       "Custom branding"
@@ -41,6 +42,9 @@ const plans = [
     description: "For growing organizations",
     features: [
       "1000 certificates per month",
+      "All 14 pre-built templates",
+      "Unlimited custom template uploads",
+      "Unlimited AI template generation",
       "Team collaboration (5 users)",
       "Advanced analytics",
       "API access",
@@ -57,6 +61,8 @@ const plans = [
     description: "For large institutions",
     features: [
       "Unlimited certificates",
+      "All templates + unlimited uploads",
+      "Unlimited AI template generation",
       "Unlimited team members",
       "Custom integrations",
       "SLA guarantee",

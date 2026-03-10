@@ -1,71 +1,71 @@
 
 
-# Pre-built Template Gallery with Tier-Gated Access
+# Phase 2: Logo Update, Favicon, Futuristic Animations, and Hero Refinement
 
-## Overview
-Create 14 futuristic certificate templates as a browsable gallery, with tier-based access controls for templates, uploads, and AI generation.
+## 1. Logo and Favicon Update
 
-## Tier Rules
+- Copy `AfriCertify_Logo_2.png` to `src/assets/africertify-logo.png` (replacing current)
+- Copy `AfriCertify_Favicon.png` to `public/favicon.png` (replacing current)
+- No component changes needed -- `AfriCertifyLogo.tsx` already imports from the same path
 
-| Feature | Freemium | Premium ($29/mo) | Business/Enterprise |
-|---|---|---|---|
-| Pre-built templates | 2 free | All 14 | All 14 |
-| Upload custom templates | 0 | Up to 7 | Unlimited |
-| AI-generate templates (prompts) | 0 | 3 credits | Unlimited |
+## 2. Hero UI Refinement
 
-## 14 Template Designs
+- Redesign the hero with a more dramatic, futuristic layout:
+  - Add animated floating circuit-pattern particles in the background (CSS-only with keyframes)
+  - Refine the gradient to use deeper blues with gold/neon accents matching the new logo's gold "AC"
+  - Add a floating glow orb animation behind the hero image
+  - Stagger text animations for headline words for a cinematic reveal effect
+  - Add a subtle grid/scan-line overlay for a cyberpunk feel
+  - Improve the stat counters with animated count-up effect using framer-motion
 
-**Free (2):**
-1. **Neon Circuit** -- Dark navy + neon blue circuit-board border
-2. **Golden Prestige** -- Black + gold gradients, serif typography
+## 3. Futuristic Animations Across the App
 
-**Premium (12):**
-3. **Aurora Gradient** -- Purple-to-teal gradient, glass-morphism
-4. **Minimal Mono** -- Clean white, geometric border
-5. **Cosmic Night** -- Deep purple, starfield dots, glowing text
-6. **Emerald Academy** -- Forest green + gold, classic academic
-7. **Sunset Blaze** -- Coral-to-orange gradient, bold type
-8. **Ice Crystal** -- Cool blue, frosted glass effect
-9. **Sahara Gold** -- Warm sand tones, African-inspired patterns
-10. **Digital Wave** -- Cyan-to-indigo, wave pattern border
-11. **Royal Crest** -- Deep burgundy, ornamental crest border
-12. **Carbon Fiber** -- Dark gray carbon texture, sharp modern lines
-13. **Ocean Depth** -- Deep teal, subtle underwater gradient
-14. **Crimson Honor** -- Dark red-to-black, bold serif, ribbon accent
+### Page Transitions
+- Wrap routes in `AnimatePresence` with fade+slide transitions between pages in `App.tsx`
 
-## Implementation
+### Animated Background Component
+- Create a reusable `CircuitBackground` component with CSS-animated floating dots and connection lines
+- Apply to Hero section and Dashboard background
 
-### 1. Create `src/data/prebuiltTemplates.ts`
-Define all 14 templates as static constants with: `id`, `name`, `description`, `tier` ("free" | "premium"), `backgroundColor`, `textColor`, `fontFamily`, `fontSize`, `alignment`, `borderStyle`, `thumbnailGradient` (CSS gradient for card preview).
+### Enhanced Card Interactions
+- Add glow-on-hover effect to all Cards (Features, Pricing, Dashboard stats)
+- Scale-up with border glow on hover using Tailwind + CSS transitions
 
-### 2. Create `src/pages/TemplateGallery.tsx`
-- Grid of 14 template cards with mini CSS-rendered previews
-- "Free" and "Premium" badges on cards
-- Click opens a preview modal; "Use This Template" clones to user's `templates` table
-- Free-tier users see lock overlay + upgrade prompt on premium templates
-- Tier check is client-side for now (all users = free unless subscription tracking is added later)
+### Futuristic Loading Spinner
+- Create a `NeonSpinner` component with orbiting rings animation for use across the app
 
-### 3. Update `src/components/Pricing.tsx`
-Update feature lists to reflect the new template rules:
-- Freemium: "2 pre-built templates"
-- Premium: "All 14 templates", "Upload up to 7 custom templates", "3 AI template generation credits"
-- Business: "All 14 templates", "Unlimited custom uploads", "Unlimited AI generation"
-- Enterprise: same as Business + custom features
+### CSS Keyframes to Add (in tailwind.config.ts)
+- `float` -- gentle vertical bob for floating elements
+- `glow-pulse` -- neon glow intensity cycling
+- `scan-line` -- horizontal scan effect for cyberpunk feel
+- `circuit-flow` -- animated dashes along circuit paths
 
-### 4. Update `src/pages/Templates.tsx`
-- Add a "Browse Gallery" button linking to `/template-gallery`
-- Show upload count vs limit for Premium users (future enforcement)
+### Typography Hover Effects
+- Add subtle letter-spacing expansion on heading hover via CSS class
 
-### 5. Add route in `src/App.tsx`
-- `/template-gallery` as a protected route
+### Dashboard Enhancements
+- Stagger card entrance animations with increasing delays
+- Add pulsing glow borders on stat cards
 
-### 6. AI Generation (edge function -- future-ready stub)
-- Add a "Generate with AI" button in the gallery (disabled for free users, 3 credits for Premium, unlimited for Business)
-- The actual AI edge function using Lovable AI (`google/gemini-3.1-flash-image-preview`) to generate certificate backgrounds from prompts will be wired up as part of this work
-- Create `supabase/functions/generate-template/index.ts` that takes a text prompt, calls the image model, uploads the result to `template-assets` bucket, and returns the URL
+## 4. Low Data Mode Foundation
+- Add a CSS class `.reduce-motion` that disables all custom animations
+- Respect `prefers-reduced-motion` media query globally in CSS
 
-### Technical Notes
-- No database migration needed for the 14 static templates (they're constants, cloned on use)
-- AI generation credits tracking can be done client-side initially or via a simple counter in the `profiles` table (would need a migration to add `ai_credits_used` column) -- we can keep it simple with client-side for now
-- The gallery uses the same `TemplateLayout` interface as the editor
+## Files to Change
+
+| File | Change |
+|------|--------|
+| `src/assets/africertify-logo.png` | Replace with new logo |
+| `public/favicon.png` | Replace with new favicon |
+| `src/components/Hero.tsx` | Redesign with circuit bg, staggered text, refined colors |
+| `src/components/CircuitBackground.tsx` | New -- animated particle/circuit CSS component |
+| `src/components/NeonSpinner.tsx` | New -- futuristic loading spinner |
+| `src/components/PageTransition.tsx` | New -- AnimatePresence wrapper |
+| `src/App.tsx` | Wrap routes with PageTransition |
+| `src/index.css` | Add keyframes, glow utilities, reduced-motion support |
+| `tailwind.config.ts` | Add float, glow-pulse, scan-line keyframes and animations |
+| `src/components/Features.tsx` | Enhanced hover glow effects |
+| `src/components/Pricing.tsx` | Enhanced card animations |
+| `src/components/Navbar.tsx` | Subtle backdrop glow refinement |
+| `src/pages/Dashboard.tsx` | Enhanced stat card animations |
 

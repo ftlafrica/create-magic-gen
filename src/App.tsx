@@ -15,6 +15,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Verify from "./pages/Verify";
 import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
+import TemplateGallery from "./pages/TemplateGallery";
 import TemplateEditor from "./pages/TemplateEditor";
 import IssueCertificate from "./pages/IssueCertificate";
 import Certificates from "./pages/Certificates";
@@ -46,6 +47,7 @@ const AnimatedRoutes = () => {
         <Route path="/dashboard" element={<ProtectedRoute><PageTransition><Dashboard /></PageTransition></ProtectedRoute>} />
         <Route path="/templates" element={<ProtectedRoute><PageTransition><Templates /></PageTransition></ProtectedRoute>} />
         <Route path="/template-editor" element={<ProtectedRoute><PageTransition><TemplateEditor /></PageTransition></ProtectedRoute>} />
+        <Route path="/template-gallery" element={<ProtectedRoute><PageTransition><TemplateGallery /></PageTransition></ProtectedRoute>} />
         <Route path="/template-editor/:id" element={<ProtectedRoute><PageTransition><TemplateEditor /></PageTransition></ProtectedRoute>} />
         <Route path="/issue-certificate" element={<ProtectedRoute><PageTransition><IssueCertificate /></PageTransition></ProtectedRoute>} />
         <Route path="/courses" element={<ProtectedRoute><PageTransition><Courses /></PageTransition></ProtectedRoute>} />
