@@ -61,6 +61,8 @@ const plans = [
     description: "For large institutions",
     features: [
       "Unlimited certificates",
+      "All templates + unlimited uploads",
+      "Unlimited AI template generation",
       "Unlimited team members",
       "Custom integrations",
       "SLA guarantee",

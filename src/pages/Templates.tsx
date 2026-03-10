@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PlusCircle, Edit, Copy, Trash2, Loader2, FileText } from "lucide-react";
+import { PlusCircle, Edit, Copy, Trash2, Loader2, FileText, Sparkles } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
