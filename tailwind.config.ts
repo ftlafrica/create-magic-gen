@@ -92,6 +92,28 @@ export default {
           "0%": { strokeDashoffset: "100" },
           "100%": { strokeDashoffset: "0" },
         },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "scale-in": {
+          "0%": { transform: "scale(0.95)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        meteor: {
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": { transform: "rotate(215deg) translateX(-500px)", opacity: "0" },
+        },
+        tilt: {
+          "0%, 50%, 100%": { transform: "rotate(0deg)" },
+          "25%": { transform: "rotate(0.5deg)" },
+          "75%": { transform: "rotate(-0.5deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -100,6 +122,11 @@ export default {
         "glow-pulse": "glow-pulse 3s ease-in-out infinite",
         "scan-line": "scan-line 6s linear infinite",
         "circuit-flow": "circuit-flow 3s linear infinite",
+        "fade-in": "fade-in 0.5s ease-out",
+        "scale-in": "scale-in 0.3s ease-out",
+        shimmer: "shimmer 2.5s linear infinite",
+        meteor: "meteor 5s linear infinite",
+        tilt: "tilt 10s ease-in-out infinite",
       },
     },
   },
