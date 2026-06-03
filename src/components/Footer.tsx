@@ -11,7 +11,7 @@ const socials = [
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden border-t border-secondary/15 bg-surface-1/40">
+    <footer className="relative overflow-hidden border-t border-secondary/15 bg-[hsl(var(--surface-1)/0.4)]">
       {/* Top neon divider */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-secondary/60 to-transparent" />
       {/* Ambient glow */}
