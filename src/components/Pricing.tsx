@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Check, Sparkles } from "lucide-react";
 
 const plans = [
@@ -13,11 +12,11 @@ const plans = [
       "2 pre-built templates",
       "Basic customization",
       "Email support",
-      "Recipient portfolio"
+      "Recipient portfolio",
     ],
     cta: "Start Free",
     variant: "outline" as const,
-    popular: false
+    popular: false,
   },
   {
     name: "Premium",
@@ -30,11 +29,11 @@ const plans = [
       "3 AI template generation credits",
       "Priority support",
       "Analytics dashboard",
-      "Custom branding"
+      "Custom branding",
     ],
     cta: "Choose Premium",
-    variant: "hero" as const,
-    popular: true
+    variant: "cta" as const,
+    popular: true,
   },
   {
     name: "Business",
@@ -49,11 +48,11 @@ const plans = [
       "Advanced analytics",
       "API access",
       "White-label options",
-      "Dedicated support"
+      "Dedicated support",
     ],
     cta: "Choose Business",
     variant: "accent" as const,
-    popular: false
+    popular: false,
   },
   {
     name: "Enterprise",
@@ -67,76 +66,89 @@ const plans = [
       "Custom integrations",
       "SLA guarantee",
       "Dedicated account manager",
-      "Custom features"
+      "Custom features",
     ],
     cta: "Contact Sales",
     variant: "outline" as const,
-    popular: false
-  }
+    popular: false,
+  },
 ];
 
 const Pricing = () => {
   return (
-    <section id="pricing" className="py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-secondary/5" />
-      
-      <div className="container mx-auto px-6 relative z-10">
+    <section id="pricing" className="py-24 sm:py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-secondary/5 pointer-events-none" />
+
+      <div className="container mx-auto px-5 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16 space-y-4"
+          className="text-center mb-14 sm:mb-16 space-y-4 max-w-3xl mx-auto"
         >
-          <h2 className="text-4xl md:text-6xl font-bold">
-            Simple, Transparent{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cta to-accent">
-              Pricing
-            </span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs tracking-wider uppercase text-cta">
+            <span className="w-1.5 h-1.5 rounded-full bg-cta animate-glow-pulse" />
+            Pricing
+          </div>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+            Simple, transparent <span className="text-gradient-gold">pricing</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Choose the perfect plan for your needs. All plans include our core features.
+          <p className="text-base sm:text-lg text-muted-foreground">
+            Choose the perfect plan for your needs. All plans include core features.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="relative"
+              transition={{ delay: index * 0.08 }}
+              className={`relative ${plan.popular ? "lg:-translate-y-3" : ""}`}
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary text-secondary-foreground px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1">
-                  <Sparkles className="w-4 h-4" />
-                  Most Popular
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                  <div className="bg-gold text-cta-foreground px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 shadow-[0_8px_20px_-6px_hsl(var(--cta)/0.6)]">
+                    <Sparkles className="w-3 h-3" />
+                    MOST POPULAR
+                  </div>
                 </div>
               )}
-              <Card className={`p-8 h-full flex flex-col glow-card ${plan.popular ? 'border-secondary/50 shadow-[0_0_30px_hsl(var(--secondary)/0.2)]' : 'bg-card/50 backdrop-blur-sm'}`}>
+
+              <div
+                className={`relative h-full rounded-2xl p-6 sm:p-7 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
+                  plan.popular
+                    ? "glass-strong border-beam shadow-[0_20px_60px_-20px_hsl(var(--cta)/0.4)]"
+                    : "glass hover:border-secondary/40"
+                }`}
+              >
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold">{plan.price === "Custom" ? "" : "$"}{plan.price}</span>
-                    {plan.price !== "Custom" && <span className="text-muted-foreground">/month</span>}
+                  <h3 className="text-xl sm:text-2xl font-bold mb-1 tracking-wide">{plan.name}</h3>
+                  <p className="text-muted-foreground text-xs sm:text-sm mb-4 min-h-[36px]">{plan.description}</p>
+                  <div className="flex items-baseline gap-1">
+                    {plan.price !== "Custom" && <span className="text-2xl font-bold text-muted-foreground">$</span>}
+                    <span className={`text-4xl sm:text-5xl font-bold ${plan.popular ? "text-gradient-gold" : ""}`}>
+                      {plan.price}
+                    </span>
+                    {plan.price !== "Custom" && <span className="text-muted-foreground text-sm">/mo</span>}
                   </div>
                 </div>
 
-                <div className="space-y-3 mb-8 flex-grow">
+                <div className="space-y-2.5 mb-6 flex-grow">
                   {plan.features.map((feature) => (
-                    <div key={feature} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-                      <span className="text-sm">{feature}</span>
+                    <div key={feature} className="flex items-start gap-2.5">
+                      <Check className={`w-4 h-4 shrink-0 mt-0.5 ${plan.popular ? "text-cta" : "text-secondary"}`} />
+                      <span className="text-xs sm:text-sm text-foreground/90">{feature}</span>
                     </div>
                   ))}
                 </div>
 
-                <Button variant={plan.variant} className="w-full" size="lg">
+                <Button variant={plan.variant} className="w-full rounded-full" size="lg">
                   {plan.cta}
                 </Button>
-              </Card>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -147,8 +159,8 @@ const Pricing = () => {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <p className="text-muted-foreground">
-            All plans include 14-day free trial. No credit card required.
+          <p className="text-sm text-muted-foreground">
+            All plans include a 14-day free trial. No credit card required.
           </p>
         </motion.div>
       </div>

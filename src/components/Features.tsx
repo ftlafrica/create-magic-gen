@@ -1,91 +1,109 @@
 import { motion } from "framer-motion";
 import { Palette, Upload, Shield, Share2, BarChart3, Users } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import MagicCard from "@/components/effects/MagicCard";
 
 const features = [
   {
     icon: Palette,
     title: "AI-Enhanced Templates",
-    description: "Upload your logo and let AI suggest beautiful color palettes. Drag-and-drop editor for complete customization.",
+    description: "Upload your logo and let AI suggest beautiful color palettes. Drag-and-drop editor for total control.",
     color: "text-secondary",
-    gradient: "from-secondary/20 to-transparent"
+    ring: "ring-secondary/30",
+    glow: "hsl(var(--secondary) / 0.18)",
+    span: "md:col-span-2",
   },
   {
     icon: Upload,
     title: "Bulk Issuance",
-    description: "Issue single certificates or upload CSV files to create hundreds of certificates in seconds.",
+    description: "Issue one certificate or upload a CSV to create hundreds in seconds.",
     color: "text-accent",
-    gradient: "from-accent/20 to-transparent"
+    ring: "ring-accent/30",
+    glow: "hsl(var(--accent) / 0.18)",
+    span: "",
   },
   {
     icon: Shield,
     title: "Secure Verification",
-    description: "Every certificate is blockchain-verified with a unique QR code and public verification link.",
+    description: "Every certificate is cryptographically verified with a unique QR code and public link.",
     color: "text-cta",
-    gradient: "from-cta/20 to-transparent"
+    ring: "ring-cta/30",
+    glow: "hsl(var(--cta) / 0.18)",
+    span: "",
   },
   {
     icon: Share2,
     title: "One-Click Sharing",
-    description: "Recipients can share their verified achievements to LinkedIn and other platforms instantly.",
+    description: "Recipients share verified achievements on LinkedIn and beyond, instantly.",
     color: "text-secondary",
-    gradient: "from-secondary/20 to-transparent"
+    ring: "ring-secondary/30",
+    glow: "hsl(var(--secondary) / 0.18)",
+    span: "",
   },
   {
     icon: BarChart3,
     title: "Analytics Dashboard",
-    description: "Track certificate views, shares, and engagement with comprehensive analytics.",
+    description: "Track views, shares, and engagement across every credential you issue.",
     color: "text-accent",
-    gradient: "from-accent/20 to-transparent"
+    ring: "ring-accent/30",
+    glow: "hsl(var(--accent) / 0.18)",
+    span: "md:col-span-2",
   },
   {
     icon: Users,
     title: "Team Collaboration",
-    description: "Invite team members as editors to help manage your organization's certificates.",
+    description: "Invite editors to manage your organization's certificates together.",
     color: "text-cta",
-    gradient: "from-cta/20 to-transparent"
-  }
+    ring: "ring-cta/30",
+    glow: "hsl(var(--cta) / 0.18)",
+    span: "md:col-span-3",
+  },
 ];
 
 const Features = () => {
   return (
-    <section id="features" className="py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent" />
-      
-      <div className="container mx-auto px-6 relative z-10">
+    <section id="features" className="py-24 sm:py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent pointer-events-none" />
+
+      <div className="container mx-auto px-5 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16 space-y-4"
+          className="text-center mb-14 sm:mb-16 space-y-4 max-w-3xl mx-auto"
         >
-          <h2 className="text-4xl md:text-6xl font-bold">
-            Everything You Need to Issue{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
-              Professional Certificates
-            </span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs tracking-wider uppercase text-secondary">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-glow-pulse" />
+            Capabilities
+          </div>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+            Everything you need to issue{" "}
+            <span className="text-gradient-aurora">professional credentials</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Powerful features designed for educators, trainers, and organizations who want to issue verifiable credentials.
+          <p className="text-base sm:text-lg text-muted-foreground">
+            Powerful tools for educators, trainers, and organizations.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.07, duration: 0.5 }}
+              className={feature.span}
             >
-              <Card className="p-8 bg-card/50 backdrop-blur-sm border-border glow-card group h-full">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
+              <MagicCard
+                gradientColor={feature.glow}
+                className="h-full p-6 sm:p-7 min-h-[210px]"
+              >
+                <div className={`w-12 h-12 rounded-xl bg-card/60 ring-1 ${feature.ring} flex items-center justify-center mb-5 shadow-inner transition-transform duration-300 group-hover:scale-110`}>
+                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-              </Card>
+                <h3 className="text-xl sm:text-2xl font-bold mb-2 tracking-wide">{feature.title}</h3>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{feature.description}</p>
+              </MagicCard>
             </motion.div>
           ))}
         </div>
