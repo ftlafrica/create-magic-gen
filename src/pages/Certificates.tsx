@@ -17,6 +17,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import EmptyState from "@/components/EmptyState";
+import StatusPill from "@/components/StatusPill";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -115,20 +117,21 @@ const Certificates = () => {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
-        <div className="flex items-center justify-between">
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Issued Certificates</h1>
-            <p className="text-muted-foreground text-lg">View and manage all certificates</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-secondary mb-1">Credentials</p>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-1">Issued Certificates</h1>
+            <p className="text-sm text-muted-foreground">View and manage every certificate you've issued</p>
           </div>
           <Link to="/issue-certificate">
-            <Button variant="cta" size="lg">
+            <Button variant="cta" className="rounded-full">
               Issue New Certificate
             </Button>
           </Link>
         </div>
 
-        <Card className="p-6 bg-card/80 backdrop-blur-sm">
+        <div className="glass rounded-2xl p-5 sm:p-6">
           <div className="flex flex-wrap gap-4 mb-6">
             <div className="relative flex-1 min-w-[200px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -158,18 +161,19 @@ const Certificates = () => {
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+            <div className="space-y-2 py-4">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="h-14 rounded-lg bg-muted/30 animate-pulse" />
+              ))}
             </div>
           ) : certificates.length === 0 ? (
-            <div className="text-center py-20">
-              <Award className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
-              <h3 className="text-xl font-bold mb-2">No certificates found</h3>
-              <p className="text-muted-foreground mb-6">Issue your first certificate to get started.</p>
-              <Link to="/issue-certificate">
-                <Button variant="cta">Issue Certificate</Button>
-              </Link>
-            </div>
+            <EmptyState
+              icon={Award}
+              title="No certificates found"
+              description="Issue your first certificate to get started."
+              actionLabel="Issue Certificate"
+              actionTo="/issue-certificate"
+            />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -201,13 +205,7 @@ const Certificates = () => {
                       <td className="py-4 px-4 text-muted-foreground">{cert.course_name || "—"}</td>
                       <td className="py-4 px-4 text-muted-foreground">{cert.issue_date}</td>
                       <td className="py-4 px-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          cert.status === "revoked"
-                            ? "bg-destructive/20 text-destructive"
-                            : "bg-secondary/20 text-secondary"
-                        }`}>
-                          {cert.status}
-                        </span>
+                        <StatusPill status={cert.status} />
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center justify-end gap-1">
@@ -276,7 +274,7 @@ const Certificates = () => {
               </Button>
             </div>
           </div>
-        </Card>
+        </div>
       </div>
     </DashboardLayout>
   );
