@@ -1,71 +1,111 @@
 
+# AfriCertify UI Refinement — Phased Plan
 
-# Phase 2: Logo Update, Favicon, Futuristic Animations, and Hero Refinement
+## Goal
+Transform the current UI into an aesthetically beautiful, futuristic, elegant, and visually wowing experience while keeping the existing dark-blue/neon/gold brand identity and all current functionality intact.
 
-## 1. Logo and Favicon Update
+## Guiding Principles
+- Keep all existing routes, data flows, and business logic untouched
+- Only frontend/presentation changes (Tailwind tokens, components, motion, layout)
+- Use semantic design tokens — no hard-coded colors in components
+- Respect `prefers-reduced-motion` (already wired)
+- Mobile-first refinement (current viewport is 384px wide — many screens need polish there first)
 
-- Copy `AfriCertify_Logo_2.png` to `src/assets/africertify-logo.png` (replacing current)
-- Copy `AfriCertify_Favicon.png` to `public/favicon.png` (replacing current)
-- No component changes needed -- `AfriCertifyLogo.tsx` already imports from the same path
+---
 
-## 2. Hero UI Refinement
+## Phase 1 — Design System Foundation (tokens, depth, motion vocabulary)
 
-- Redesign the hero with a more dramatic, futuristic layout:
-  - Add animated floating circuit-pattern particles in the background (CSS-only with keyframes)
-  - Refine the gradient to use deeper blues with gold/neon accents matching the new logo's gold "AC"
-  - Add a floating glow orb animation behind the hero image
-  - Stagger text animations for headline words for a cinematic reveal effect
-  - Add a subtle grid/scan-line overlay for a cyberpunk feel
-  - Improve the stat counters with animated count-up effect using framer-motion
+**Goal:** Upgrade the visual language so every screen inherits the refinement automatically.
 
-## 3. Futuristic Animations Across the App
+- Refine `src/index.css` tokens:
+  - Add layered surface tokens: `--surface-1`, `--surface-2`, `--surface-3` (for glass/elevated cards)
+  - Add gradient tokens: `--gradient-aurora`, `--gradient-gold`, `--gradient-mesh`
+  - Add elevation tokens: `--shadow-glass`, `--shadow-elevated`, `--shadow-neon-soft`
+  - Add border tokens: `--border-glow`, `--border-subtle`
+- Extend `tailwind.config.ts`:
+  - New keyframes: `shimmer`, `aurora`, `tilt`, `border-glow`, `text-shine`
+  - New utilities: `bg-mesh`, `glass`, `glass-strong`, `text-gradient-gold`, `text-gradient-aurora`
+- Typography polish:
+  - Add display weight scale; tighten letter-spacing for Bebas headings
+  - Introduce subtle `text-shine` on hero/section headings
 
-### Page Transitions
-- Wrap routes in `AnimatePresence` with fade+slide transitions between pages in `App.tsx`
+**Deliverable:** Tokens + utilities ready; no visible regression yet.
 
-### Animated Background Component
-- Create a reusable `CircuitBackground` component with CSS-animated floating dots and connection lines
-- Apply to Hero section and Dashboard background
+---
 
-### Enhanced Card Interactions
-- Add glow-on-hover effect to all Cards (Features, Pricing, Dashboard stats)
-- Scale-up with border glow on hover using Tailwind + CSS transitions
+## Phase 2 — Global Shell (Navbar, Footer, Background, Page Transitions)
 
-### Futuristic Loading Spinner
-- Create a `NeonSpinner` component with orbiting rings animation for use across the app
+- **Navbar:** glass-morphism background, animated underline on nav links, neon active indicator, mobile drawer with backdrop blur, scroll-aware (shrinks/intensifies on scroll)
+- **Footer:** layered gradient, circuit motif divider, refined link columns, social icons with neon hover
+- **Global background:** subtle animated mesh gradient + existing `CircuitBackground` tuned down for legibility
+- **PageTransition:** upgrade to crossfade + slight blur for cinematic feel
 
-### CSS Keyframes to Add (in tailwind.config.ts)
-- `float` -- gentle vertical bob for floating elements
-- `glow-pulse` -- neon glow intensity cycling
-- `scan-line` -- horizontal scan effect for cyberpunk feel
-- `circuit-flow` -- animated dashes along circuit paths
+---
 
-### Typography Hover Effects
-- Add subtle letter-spacing expansion on heading hover via CSS class
+## Phase 3 — Landing Page Wow Pass
 
-### Dashboard Enhancements
-- Stagger card entrance animations with increasing delays
-- Add pulsing glow borders on stat cards
+- **Hero:** add MagicUI-style `Meteors` + `Particles` overlay, aurora text on headline, animated stat counters with glow rings, dual CTA with shimmer button
+- **Features:** convert to bento-grid layout, magic-card spotlight on hover, icon glow
+- **CertificateShowcase:** 3D tilt-on-hover certificate cards, parallax scroll reveal
+- **Pricing:** elevated "Premium" card with animated border-beam, gold gradient on recommended tier, comparative feature matrix collapsible on mobile
 
-## 4. Low Data Mode Foundation
-- Add a CSS class `.reduce-motion` that disables all custom animations
-- Respect `prefers-reduced-motion` media query globally in CSS
+---
 
-## Files to Change
+## Phase 4 — Auth & Onboarding Polish
 
-| File | Change |
-|------|--------|
-| `src/assets/africertify-logo.png` | Replace with new logo |
-| `public/favicon.png` | Replace with new favicon |
-| `src/components/Hero.tsx` | Redesign with circuit bg, staggered text, refined colors |
-| `src/components/CircuitBackground.tsx` | New -- animated particle/circuit CSS component |
-| `src/components/NeonSpinner.tsx` | New -- futuristic loading spinner |
-| `src/components/PageTransition.tsx` | New -- AnimatePresence wrapper |
-| `src/App.tsx` | Wrap routes with PageTransition |
-| `src/index.css` | Add keyframes, glow utilities, reduced-motion support |
-| `tailwind.config.ts` | Add float, glow-pulse, scan-line keyframes and animations |
-| `src/components/Features.tsx` | Enhanced hover glow effects |
-| `src/components/Pricing.tsx` | Enhanced card animations |
-| `src/components/Navbar.tsx` | Subtle backdrop glow refinement |
-| `src/pages/Dashboard.tsx` | Enhanced stat card animations |
+- **SignIn / SignUp / ResetPassword:** split-screen layout on desktop (form + animated brand panel), glass card on mobile, inline validation with smooth error transitions, social login buttons with branded hover states, password strength meter
 
+---
+
+## Phase 5 — Dashboard & App Shell
+
+- **DashboardLayout:** refined sidebar with neon active state, collapsible on mobile with smooth drawer, breadcrumbs with chevron animation
+- **Dashboard:** staggered stat cards with pulsing accent borders, mini-charts with gradient fills, recent-activity timeline with circuit-line connector, empty states with illustrated CTAs
+- **Analytics:** elegant chart styling (gradient area fills, neon stroke), KPI cards with trend arrows
+
+---
+
+## Phase 6 — Core Feature Screens
+
+- **Certificates list:** card/table toggle, status pills with glow, search with command-palette feel
+- **CertificateDetail:** hero header with certificate preview, verification badge animation, QR code with neon frame, share/download bar
+- **IssueCertificate:** multi-step wizard with progress ring, live preview pane on desktop
+- **TemplateGallery:** card hover lift + shine sweep, premium lock overlay with frosted blur and upgrade CTA
+- **TemplateEditor:** refined toolbar (segmented controls), canvas with grid backdrop, properties panel as glass drawer
+- **Verify:** dramatic hero input ("Enter Certificate ID"), animated verification result reveal (success ripple / failure shake)
+- **RecipientPortfolio:** profile header with gradient banner, certificate grid with masonry layout
+
+---
+
+## Phase 7 — Micro-interactions & Polish
+
+- Replace generic loaders with `NeonSpinner` everywhere
+- Toasts: glass styling, neon accent per variant
+- Buttons: add `shimmer` variant for primary CTAs, refined focus rings
+- Empty states: consistent illustrated component
+- Skeletons: shimmer-gradient style
+- Accessibility pass: contrast check on all new tokens, focus-visible audit
+
+---
+
+## Phase 8 — Mobile Refinement & Performance
+
+- Audit every screen at 384px width (current preview)
+- Safe-area padding, larger tap targets, bottom-nav consideration for app screens
+- Lazy-load heavy motion components; honor `reduce-motion`
+- Image optimization pass on assets
+
+---
+
+## Technical Notes
+- New components: `MeshBackground`, `GlassCard`, `ShimmerButton`, `BorderBeamCard`, `AnimatedCounter` (if missing), `EmptyState`, `StatusPill`, `StepProgress`
+- MagicUI components to install/adapt: Meteors, Particles, BorderBeam, MagicCard, AuroraText, ShimmerButton, BentoGrid
+- All colors via HSL tokens in `index.css` — components use `bg-secondary`, `text-cta`, etc., never raw hex
+- Framer Motion already present; no new animation lib needed beyond MagicUI snippets
+
+---
+
+## Suggested Execution Order
+Recommend running **Phase 1 + 2 + 3 together** first (foundation + landing) so the user immediately sees the "wow" upgrade, then proceeding phase-by-phase. Each phase is independently shippable.
+
+**Which phases should I start with?** (Default suggestion: Phases 1–3 in one pass, then pause for review before continuing.)
