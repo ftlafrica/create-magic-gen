@@ -149,10 +149,11 @@ const IssueCertificate = () => {
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="max-w-4xl mx-auto space-y-6">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Issue Certificate</h1>
-          <p className="text-muted-foreground text-lg">Send certificates to recipients</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-secondary mb-1">Issue</p>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-1">Issue Certificate</h1>
+          <p className="text-sm text-muted-foreground">Send a single certificate or upload a CSV for bulk issuance</p>
         </div>
 
         <Tabs defaultValue="single" className="w-full">

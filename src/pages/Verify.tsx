@@ -52,13 +52,16 @@ const Verify = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="container mx-auto max-w-4xl">
+    <div className="min-h-screen bg-background p-5 sm:p-6 relative overflow-hidden">
+      <div className="absolute inset-0 bg-mesh pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-secondary/15 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="container mx-auto max-w-3xl relative z-10">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-secondary mb-8 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back to home
         </Link>
 
@@ -67,17 +70,23 @@ const Verify = () => {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-8"
         >
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-2">Verify Certificate</h1>
-            <p className="text-muted-foreground text-lg">
-              Enter a certificate code or ID to verify its authenticity
+          <div className="text-center space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs tracking-wider uppercase text-secondary">
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-glow-pulse" />
+              Verification Portal
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold">
+              Verify a <span className="text-gradient-aurora">Certificate</span>
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
+              Enter a certificate code or ID to confirm its authenticity in seconds.
             </p>
           </div>
 
-          <Card className="p-8 bg-card/80 backdrop-blur-sm">
-            <form onSubmit={handleVerify} className="flex gap-4">
+          <div className="glass-strong rounded-2xl p-5 sm:p-6">
+            <form onSubmit={handleVerify} className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   placeholder="Enter certificate code (e.g. a1b2c3d4e5f6)"
                   className="pl-10 h-12"
@@ -86,15 +95,11 @@ const Verify = () => {
                   maxLength={100}
                 />
               </div>
-              <Button type="submit" variant="cta" size="lg" disabled={loading || !query.trim()}>
-                {loading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  "Verify"
-                )}
+              <Button type="submit" variant="cta" size="lg" className="rounded-full sm:w-auto" disabled={loading || !query.trim()}>
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Verify"}
               </Button>
             </form>
-          </Card>
+          </div>
 
           {searched && !loading && cert && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
