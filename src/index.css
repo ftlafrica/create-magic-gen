@@ -2,13 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* AfriCertify Design System — futuristic, layered, cinematic. All colors HSL. */
 
 @layer base {
   :root {
-    /* AfriCertify Design System */
     --background: 210 100% 6%;
     --foreground: 0 0% 100%;
 
@@ -18,22 +15,18 @@ All colors MUST be HSL.
     --popover: 210 50% 8%;
     --popover-foreground: 0 0% 100%;
 
-    /* Primary - Dark Blue */
     --primary: 210 100% 12%;
     --primary-foreground: 0 0% 100%;
-    
-    /* Neon Blue */
+
     --secondary: 195 100% 50%;
     --secondary-foreground: 210 100% 6%;
 
     --muted: 210 50% 20%;
     --muted-foreground: 210 20% 70%;
 
-    /* Purple accent */
     --accent: 258 90% 66%;
     --accent-foreground: 0 0% 100%;
-    
-    /* Yellow CTA */
+
     --cta: 45 100% 51%;
     --cta-foreground: 210 100% 6%;
 
@@ -45,58 +38,59 @@ All colors MUST be HSL.
     --ring: 195 100% 50%;
 
     --radius: 0.75rem;
-    
-    /* Custom gradients & glows */
+
+    /* Layered surfaces for glass/elevation */
+    --surface-1: 210 60% 9%;
+    --surface-2: 210 55% 12%;
+    --surface-3: 210 50% 16%;
+
+    /* Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(210 100% 6%), hsl(210 100% 12%));
-    --gradient-glow: linear-gradient(135deg, hsl(195 100% 50% / 0.1), hsl(258 90% 66% / 0.1));
+    --gradient-glow: linear-gradient(135deg, hsl(195 100% 50% / 0.12), hsl(258 90% 66% / 0.12));
     --gradient-neon: linear-gradient(135deg, hsl(195 100% 50%), hsl(258 90% 66%));
+    --gradient-aurora: linear-gradient(120deg, hsl(195 100% 50%) 0%, hsl(258 90% 66%) 45%, hsl(45 100% 51%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 100% 60%), hsl(38 100% 45%));
+    --gradient-mesh:
+      radial-gradient(at 18% 22%, hsl(195 100% 50% / 0.18) 0px, transparent 50%),
+      radial-gradient(at 82% 14%, hsl(258 90% 66% / 0.18) 0px, transparent 50%),
+      radial-gradient(at 70% 85%, hsl(45 100% 51% / 0.12) 0px, transparent 50%),
+      radial-gradient(at 12% 80%, hsl(195 100% 50% / 0.14) 0px, transparent 50%);
+
+    /* Shadows / glows */
     --glow-neon: 0 0 40px hsl(195 100% 50% / 0.4);
-    --glow-purple: 0 0 40px hsl(258 90% 66% / 0.3);
-    --glow-cta: 0 0 30px hsl(45 100% 51% / 0.4);
+    --glow-purple: 0 0 40px hsl(258 90% 66% / 0.35);
+    --glow-cta: 0 0 30px hsl(45 100% 51% / 0.45);
+    --shadow-glass: 0 8px 32px hsl(210 100% 4% / 0.45), inset 0 1px 0 hsl(0 0% 100% / 0.06);
+    --shadow-elevated: 0 24px 60px -20px hsl(210 100% 4% / 0.7);
+    --shadow-neon-soft: 0 0 0 1px hsl(195 100% 50% / 0.2), 0 12px 40px -10px hsl(195 100% 50% / 0.25);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    /* Dark mode uses same colors - platform is dark by default */
     --background: 210 100% 6%;
     --foreground: 0 0% 100%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -117,35 +111,153 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Urbanist', sans-serif;
+    font-feature-settings: "ss01", "cv11";
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
+  }
+
+  ::selection {
+    background: hsl(var(--secondary) / 0.35);
+    color: hsl(var(--foreground));
   }
 }
 
-/* Glow hover utility for cards */
 @layer utilities {
+  /* Glass surfaces */
+  .glass {
+    background: hsl(var(--surface-1) / 0.55);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid hsl(var(--secondary) / 0.12);
+    box-shadow: var(--shadow-glass);
+  }
+  .glass-strong {
+    background: hsl(var(--surface-2) / 0.75);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid hsl(var(--secondary) / 0.18);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Backgrounds */
+  .bg-mesh {
+    background-image: var(--gradient-mesh);
+    background-color: hsl(var(--background));
+  }
+  .bg-aurora {
+    background-image: var(--gradient-aurora);
+  }
+  .bg-gold {
+    background-image: var(--gradient-gold);
+  }
+
+  /* Text gradients */
+  .text-gradient-aurora {
+    background: var(--gradient-aurora);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: aurora 8s ease-in-out infinite;
+  }
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-neon {
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Shine sweep on hover */
+  .shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .shine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, hsl(0 0% 100% / 0.18) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.9s ease;
+    pointer-events: none;
+  }
+  .shine:hover::before { transform: translateX(120%); }
+
+  /* Card glow */
   .glow-card {
     @apply transition-all duration-300;
   }
   .glow-card:hover {
-    box-shadow: 0 0 30px hsl(var(--secondary) / 0.15), 0 0 60px hsl(var(--secondary) / 0.05);
-    border-color: hsl(var(--secondary) / 0.4);
+    box-shadow: 0 0 30px hsl(var(--secondary) / 0.18), 0 0 60px hsl(var(--secondary) / 0.08);
+    border-color: hsl(var(--secondary) / 0.45);
+    transform: translateY(-2px);
   }
 
-  .heading-hover {
-    @apply transition-all duration-300;
+  .heading-hover { @apply transition-all duration-300; }
+  .heading-hover:hover { letter-spacing: 0.08em; }
+
+  /* Animated border beam (sits as ::before on a relative parent with .border-beam) */
+  .border-beam {
+    position: relative;
   }
-  .heading-hover:hover {
-    letter-spacing: 0.08em;
+  .border-beam::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(from var(--beam-angle, 0deg),
+      transparent 0deg,
+      hsl(var(--secondary)) 60deg,
+      hsl(var(--accent)) 120deg,
+      transparent 180deg,
+      transparent 360deg);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: beam-spin 6s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Noise overlay for tactile depth */
+  .noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
 }
 
-/* Reduced motion support */
+/* Keyframes used by tailwind animation utilities */
+@keyframes aurora {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes beam-spin {
+  to { --beam-angle: 360deg; }
+}
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -153,7 +265,6 @@ All colors MUST be HSL.
     transition-duration: 0.01ms !important;
   }
 }
-
 .reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
