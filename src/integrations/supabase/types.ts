@@ -41,6 +41,13 @@ export type Database = {
             foreignKeyName: "certificate_views_certificate_id_fkey"
             columns: ["certificate_id"]
             isOneToOne: false
+            referencedRelation: "certificate_verification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "certificate_views_certificate_id_fkey"
+            columns: ["certificate_id"]
+            isOneToOne: false
             referencedRelation: "certificates"
             referencedColumns: ["id"]
           },
@@ -212,7 +219,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      certificate_verification: {
+        Row: {
+          certificate_code: string | null
+          course_name: string | null
+          created_at: string | null
+          id: string | null
+          issue_date: string | null
+          recipient_name: string | null
+          status: string | null
+        }
+        Insert: {
+          certificate_code?: string | null
+          course_name?: string | null
+          created_at?: string | null
+          id?: string | null
+          issue_date?: string | null
+          recipient_name?: string | null
+          status?: string | null
+        }
+        Update: {
+          certificate_code?: string | null
+          course_name?: string | null
+          created_at?: string | null
+          id?: string | null
+          issue_date?: string | null
+          recipient_name?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
